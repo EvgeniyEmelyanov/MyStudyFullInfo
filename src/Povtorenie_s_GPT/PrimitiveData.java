@@ -3052,16 +3052,12 @@ class Povtorenie7 {
 
     public static void updateList(ArrayList<String> list) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Выберите действие: " +
-                "\n1.Удалить имя; " +
-                "\n2. Добавить имя в конец списка;" +
-                "\n3.Заменить выбранное имя на Дмитрий");
+        System.out.println("Выберите действие: " + "\n1.Удалить имя; " + "\n2. Добавить имя в конец списка;" + "\n3.Заменить выбранное имя на Дмитрий");
         int choice = scanner.nextInt();
         switch (choice) {
             case 1:
                 Scanner scanner1 = new Scanner(System.in);
-                System.out.println("Введите имя, которое " +
-                        "хотите удалить (список доступных к удалению имен" + list + ")");
+                System.out.println("Введите имя, которое " + "хотите удалить (список доступных к удалению имен" + list + ")");
                 String nameRem = scanner1.nextLine();
 
                 for (int i = 0; i < list.size(); i++) {
@@ -3096,9 +3092,7 @@ class Povtorenie7 {
     }
 
     public static void main(String[] args) {
-        ArrayList<String> list = new ArrayList<String>(Arrays.asList("Алексей", "Мария",
-                "Иван", "Ольга", "Петр"
-        ));
+        ArrayList<String> list = new ArrayList<String>(Arrays.asList("Алексей", "Мария", "Иван", "Ольга", "Петр"));
         updateList(list);
     }
 }
@@ -3177,5 +3171,45 @@ class Povtorenie10 {
         int[] arr1 = {1, 2, 3, 4, 5};
         int[] arr2 = {6, 7, 8, 9};
         System.out.println(Arrays.toString(mergeArrays(arr1, arr2)));
+    }
+}
+
+class PrintRes1 {
+    double avrVar;
+    int greaterThatAvr;
+
+    PrintRes1(double avrVar, int GreaterThatAvr) {
+        this.avrVar = avrVar;
+        this.greaterThatAvr = GreaterThatAvr;
+    }
+
+    public void printInfo() {
+        System.out.println("Среднее значение: " + avrVar + "\nЗначения больше среднего: " + greaterThatAvr);
+    }
+}
+
+class Povtorenie11 {
+    public static PrintRes1 getPrintRes1(int[] arr) {
+        int sum = 0;
+        int greaterThatAvr = 0;
+        for (int i = 0; i < arr.length; i++) {
+            sum += arr[i];
+        }
+
+        double avrVar = (double) sum / arr.length;
+
+        for (int i = 0; i < arr.length; i++) {
+            if (avrVar < arr[i]) {
+                greaterThatAvr = arr[i];
+            }
+        }
+        return new PrintRes1(avrVar,greaterThatAvr);
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {4, 8, 6, 2, 10};
+        PrintRes1 pr = getPrintRes1(arr);
+        pr.printInfo();
+
     }
 }
