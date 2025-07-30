@@ -1,9 +1,6 @@
 package Povtorenie_s_GPT;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class PrimitiveData {
@@ -3176,11 +3173,11 @@ class Povtorenie10 {
 
 class PrintRes1 {
     double avrVar;
-    int greaterThatAvr;
+    List<Integer> greaterThatAvr;
 
-    PrintRes1(double avrVar, int GreaterThatAvr) {
+    PrintRes1(double avrVar, List<Integer> greaterThatAvr) {
         this.avrVar = avrVar;
-        this.greaterThatAvr = GreaterThatAvr;
+        this.greaterThatAvr = greaterThatAvr;
     }
 
     public void printInfo() {
@@ -3198,18 +3195,96 @@ class Povtorenie11 {
 
         double avrVar = (double) sum / arr.length;
 
+        List<Integer> greaterThatAvrList = new ArrayList<>();
         for (int i = 0; i < arr.length; i++) {
-            if (avrVar < arr[i]) {
-                greaterThatAvr = arr[i];
+            if (arr[i] > avrVar) {
+                greaterThatAvrList.add(arr[i]);
             }
         }
-        return new PrintRes1(avrVar,greaterThatAvr);
+        return new PrintRes1(avrVar, greaterThatAvrList);
     }
 
     public static void main(String[] args) {
         int[] arr = {4, 8, 6, 2, 10};
         PrintRes1 pr = getPrintRes1(arr);
         pr.printInfo();
+
+    }
+}
+
+class Product {
+    private String name;
+    private double price;
+
+    public void SetName(String name) {
+        this.name = name;
+    }
+
+    public void SetPrice(double price) {
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public Product(String name, double price) {
+        this.name = name;
+        this.price = price;
+
+    }
+
+
+}
+
+class ProductCatalog {
+    List<Product> products = new ArrayList<>();
+
+    public void addProduct(String name, double price) {
+        Product product = new Product(name, price);
+        products.add(product);
+    }
+
+    public void removeProduct(String name) {
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getName().equals(name)) {
+                products.remove(i);
+                break;
+            }
+        }
+    }
+
+    public void showProducts() {
+        System.out.println("List of products: ");
+        for (Product product : products) {
+            System.out.println("name: " + product.getName() + ", price: " + product.getPrice());
+        }
+    }
+
+    public void filterByPrice(double minPrice) {
+        for (Product product : products) {
+            if (product.getPrice() > minPrice) {
+                System.out.println(product.getName());
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        ProductCatalog productCatalog = new ProductCatalog();
+        productCatalog.addProduct("Cabbage", 12);
+        productCatalog.addProduct("Carrot", 11.2);
+        productCatalog.addProduct("Potato", 12.2);
+        productCatalog.addProduct("Tomato", 6.52);
+        productCatalog.addProduct("Onion", 7.2);
+        productCatalog.filterByPrice(7);
+        productCatalog.showProducts();
+        productCatalog.removeProduct("Cabbage");
+        productCatalog.showProducts();
+
 
     }
 }
