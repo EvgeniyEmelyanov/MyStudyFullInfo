@@ -1,8 +1,6 @@
 package Povtorenie_s_GPT.HashMap;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PhoneBookMap {
     private HashMap<String, String> contact = new HashMap<>();
@@ -153,5 +151,191 @@ class NameCounter {
     }
 }
 
+class CountWords {
+    public static Map<String, Integer> countWords(String text) {
+        Map<String, Integer> wordCount = new HashMap<>();
+        String[] words = text.split("\\s+");
+        for (String word : words) {
+            if (wordCount.containsKey(word)) {
+                wordCount.put(word, wordCount.get(word) + 1);
+            } else {
+                wordCount.put(word, 1);
+            }
+        }
+        return wordCount;
+    }
 
 
+    public static void main(String[] args) {
+        String text = "java is cool and java is powerful";
+
+        Map<String, Integer> result = countWords(text);
+
+        for (Map.Entry<String, Integer> entry : result.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
+
+}
+
+
+class CounterVoice {
+    public static Map<String, Integer> countVotes(List<String> votes) {
+        Map<String, Integer> voteCount = new HashMap<>();
+
+        for (String vote : votes) {
+            vote = vote.toLowerCase();
+
+            if (voteCount.containsKey(vote)) {
+                voteCount.put(vote, voteCount.get(vote) + 1);
+            } else {
+                voteCount.put(vote, 1);
+            }
+
+        }
+        return voteCount;
+    }
+
+    public static void main(String[] args) {
+        List<String> votes = List.of("Alice", "Bob", "Alice", "Charlie", "Bob", "Alice");
+        Map<String, Integer> result = countVotes(votes);
+
+        for (Map.Entry<String, Integer> entry : result.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+
+        String winner = "";
+        int maxVotes = 0;
+
+        for (Map.Entry<String, Integer> entry : result.entrySet()) {
+            if (entry.getValue() > maxVotes) {
+                maxVotes = entry.getValue();
+                winner = entry.getKey();
+            }
+        }
+        System.out.println("Победитель: " + winner + " с голосами: " + maxVotes);
+    }
+
+}
+
+class Student {
+    private String name;
+    private int age;
+
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+
+class GroupStudentsByAge {
+    public static Map<Integer, List<String>> groupByAge(List<Student> students) {
+        Map<Integer, List<String>> groupByAge = new HashMap<>();
+
+        for (Student student : students) {
+            int age = student.getAge();
+            String name = student.getName();
+
+            if (!groupByAge.containsKey(age)) {
+                groupByAge.put(age, new ArrayList<>());
+            }
+            groupByAge.get(age).add(name);
+        }
+        return groupByAge;
+    }
+
+    public static void main(String[] args) {
+        List<Student> studentList = Arrays.asList(
+                new Student("Alice", 18),
+                new Student("Bob", 19),
+                new Student("Charlie", 18),
+                new Student("David", 20),
+                new Student("Eva", 19)
+        );
+        Map<Integer, List<String>> groupByAge = groupByAge(studentList);
+        for (Map.Entry<Integer, List<String>> entry : groupByAge.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+
+    }
+}
+
+class StudentsABC {
+    private String name;
+    private int age;
+
+    public StudentsABC(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Student (" + name + ", " + age + ")";
+    }
+}
+
+class GroupStudentsByAgeAndObject {
+    public static Map<Integer, List<StudentsABC>> groupStudentsByAge(List<StudentsABC> students) {
+        Map<Integer, List<StudentsABC>> group = new HashMap<>();
+
+        for (StudentsABC student : students) {
+            int age = student.getAge();
+
+            if (!group.containsKey(age)) {
+                group.put(age, new ArrayList<>());
+            }
+            group.get(age).add(student);
+        }
+        return group;
+
+    }
+
+    public static void main(String[] args) {
+        List<StudentsABC> students = Arrays.asList(
+                new StudentsABC("Alice", 18),
+                new StudentsABC("Bob", 19),
+                new StudentsABC("Charlie", 18),
+                new StudentsABC("Anton", 23)
+
+        );
+
+        Map<Integer, List<StudentsABC>> group = groupStudentsByAge(students);
+        for (Map.Entry<Integer, List<StudentsABC>> entry : group.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
+
+}
