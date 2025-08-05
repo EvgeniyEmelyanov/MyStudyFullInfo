@@ -4,7 +4,7 @@ import java.util.*;
 
 import static java.util.Arrays.asList;
 
- class Contact {
+class Contact {
     private String name;
     private String phone;
 
@@ -110,7 +110,7 @@ class NewHashMapCourse2 {
     }
 }
 
- class HashMap_2 {
+class HashMap_2 {
     public static Map<Integer, List<String>> groupNamesBuSort(List<String> list) {
         Map<Integer, List<String>> group = new TreeMap<>();
 
@@ -130,7 +130,7 @@ class NewHashMapCourse2 {
         return group;
     }
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
         List<String> names = Arrays.asList("Anna", "Bob", "Alice", "Tom", "Eva", "John");
 
         Map<Integer, List<String>> group = groupNamesBuSort(names);
@@ -148,11 +148,11 @@ class NewHashMapCourse2 {
 }
 
 class HashMap_2_1 {
-    public static Map <String, List<String>> groupByFirstLetter(List <String> words) {
-        Map <String, List<String>> group = new TreeMap<>();
+    public static Map<String, List<String>> groupByFirstLetter(List<String> words) {
+        Map<String, List<String>> group = new TreeMap<>();
 
-        for (String name : words){
-            String letter = name.substring(0,1).toUpperCase();
+        for (String name : words) {
+            String letter = name.substring(0, 1).toUpperCase();
 
             if (!group.containsKey(letter)) {
                 group.put(letter, new ArrayList<>());
@@ -166,7 +166,152 @@ class HashMap_2_1 {
         List<String> words = Arrays.asList(
                 "apple", "banana", "Avocado", "blueberry", "apricot", "Blackberry", "cherry"
         );
+        Map<String, List<String>> group = groupByFirstLetter(words);
+        for (Map.Entry<String, List<String>> entry : group.entrySet()) {
+            String letter = entry.getKey();
+            List<String> list1 = entry.getValue();
+
+            Collections.sort(list1);
+
+            System.out.println(letter + " (" + list1.size() + " слова): " + list1);
+        }
+    }
+}
+
+class HashMap_2_3 {
+    public static Map<String, List<String>> groupByFirstLetter(List<String> words) {
+        Map<String, List<String>> group = new TreeMap<>();
+        for (String name : words) {
+            String letter = name.substring(0, 1).toUpperCase();
+            if (!group.containsKey(letter)) {
+                group.put(letter, new ArrayList<>());
+            }
+            group.get(letter).add(name);
+        }
+        return group;
+    }
+
+    public static void main(String[] args) {
+        List<String> words = Arrays.asList(
+                "apple", "banana", "Avocado", "blueberry", "apricot", "Blackberry", "cherry"
+        );
+
+        Map<String, List<String>> group = groupByFirstLetter(words);
+        for (Map.Entry<String, List<String>> entry : group.entrySet()) {
+            String letter = entry.getKey();
+            List<String> list1 = entry.getValue();
+
+            Collections.sort(list1);
+
+            int letterCount = 0;
+            for (int i = 0; i < list1.size(); i++) {
+                letterCount += list1.get(i).length();
+
+            }
+            System.out.println(letter + "(" + list1.size() + " солва): " + list1 + "- общая длинна: "
+                    + letterCount);
+        }
+    }
+}
+
+class HashMap_2_4 {
+    public static Map<String, List<String>> groupByFirstLetter(List<String> words) {
+        Map<String, List<String>> group = new TreeMap<>();
+
+        for (String name : words) {
+            String letter = name.substring(0, 1).toUpperCase();
+            if (!group.containsKey(letter)) {
+                group.put(letter, new ArrayList<>());
+            }
+            group.get(letter).add(name);
+        }
+        return group;
+    }
+
+
+    public static void main(String[] args) {
+        List<String> words = Arrays.asList(
+                "apple", "banana", "Avocado", "blueberry", "apricot", "Blackberry", "cherry"
+        );
+
+        Map<String, List<String>> group = groupByFirstLetter(words);
+        for (Map.Entry<String, List<String>> entry : group.entrySet()) {
+            String letter = entry.getKey();
+            List<String> list1 = entry.getValue();
+
+            Collections.sort(list1);
+
+            int letterCount = 0;
+            for (String str : list1) {
+                letterCount += str.length();
+            }
+
+            double average = (double) letterCount / list1.size();
+
+            String format = String.format("%.2f", average);
+
+            System.out.println(letter + "(" + list1.size() + " слова): " + list1
+                    + " - общая длина: " + letterCount + ", средняя: " + format);
+        }
+
 
     }
 }
+
+class HashMap_2_5 {
+    public static Map<String, List<String>> groupByFirstLetter(List<String> words) {
+        Map<String, List<String>> group = new TreeMap<>();
+
+        for (String name : words) {
+            String letter = name.substring(0, 1).toUpperCase();
+
+            if (!group.containsKey(letter)) {
+                group.put(letter, new ArrayList<>());
+            }
+            group.get(letter).add(name);
+        }
+        return group;
+    }
+
+
+    public static void main(String[] args) {
+        List<String> words = Arrays.asList(
+                "Alice", "Anton", "Bob", "Boris", "Charlie"
+        );
+
+        Map<String, List<String>> group = groupByFirstLetter(words);
+
+        double biggestAverage = 0;
+        String biggestLetter = "";
+
+
+        for (Map.Entry<String, List<String>> entry : group.entrySet()) {
+            String letter = entry.getKey();
+            List<String> list1 = entry.getValue();
+
+            Collections.sort(list1);
+
+            int letterCount = 0;
+            for (String str : list1) {
+                letterCount += str.length();
+            }
+
+            double average = (double) letterCount / list1.size();
+
+            if (average > biggestAverage) {
+                biggestAverage = average;
+                biggestLetter = letter;
+
+            }
+        }
+
+        String format = String.format("%.2f", biggestAverage);
+
+        System.out.println("Ответ: " + biggestLetter + ", потому что у неё самая высокая средняя длина слова: " + format);
+
+    }
+
+}
+
+
 
