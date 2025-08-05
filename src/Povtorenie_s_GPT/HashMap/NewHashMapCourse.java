@@ -313,5 +313,124 @@ class HashMap_2_5 {
 
 }
 
+class HashMap_2_6 {
+    public static void groupAndCountVowels(List<String> names) {
 
+        Map<String, List<String>> group = new TreeMap<>();
+
+        for (String name : names) {
+            String letter = name.substring(0, 1);
+
+            if (!group.containsKey(letter)) {
+                group.put(letter, new ArrayList<>());
+            }
+            group.get(letter).add(name);
+        }
+
+
+        for (Map.Entry<String, List<String>> entry : group.entrySet()) {
+
+            String letter = entry.getKey();
+            List<String> list1 = entry.getValue();
+
+            Collections.sort(list1);
+
+            int count = 0;
+            for (String str : list1) {
+                for (char c : str.toCharArray()) {
+                    if ("aeiouAEIOU".indexOf(c) >= 0) {
+                        count++;
+                    }
+                }
+            }
+
+            System.out.println(letter + ": " + list1 + " -> гласных:  " + count);
+        }
+    }
+
+    public static void main(String[] args) {
+        List<String> names = Arrays.asList(
+                "Alice", "Anton", "Bob", "Boris", "Charlie"
+        );
+        groupAndCountVowels(names);
+    }
+}
+
+class HashMap_2_7 {
+    public static void countPhonesPerPerson(List<Contact> contacts) {
+        Map<String, Integer> group = new TreeMap<>();
+
+        for (Contact contact : contacts) {
+            if (group.containsKey(contact.getName())) {
+                group.put(contact.getName(), group.get(contact.getName()) + 1);
+            } else {
+                group.put(contact.getName(), 1);
+            }
+
+
+        }
+        for (Map.Entry<String, Integer> entry : group.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
+
+    public static void main(String[] args) {
+        List<Contact> contacts = Arrays.asList(
+                new Contact("Alice", "+12345"),
+                new Contact("Bob", "+67890"),
+                new Contact("Alice", "+54321"),
+                new Contact("Charlie", "+11111"),
+                new Contact("Bob", "+22222"),
+                new Contact("Alice", "+99999")
+        );
+
+        countPhonesPerPerson(contacts);
+    }
+}
+
+class PhoneNumberComparator implements Comparator<Contact> {
+    @Override
+    public int compare(Contact c1, Contact c2) {
+        return c1.getPhone().compareTo(c2.getPhone());
+    }
+}
+
+class HashMap_2_8 {
+    public static void groupAndSortContacts(List<Contact> contacts) {
+        Map<String, List<Contact>> group = new TreeMap<>();
+
+        for (Contact contact : contacts) {
+            String letter = contact.getName().substring(0, 1);
+
+            if (!group.containsKey(letter)) {
+                group.put(letter, new ArrayList<>());
+            }
+            group.get(letter).add(contact);
+        }
+
+
+        for (Map.Entry<String, List<Contact>> entry : group.entrySet()) {
+            String letter = entry.getKey();
+            List<Contact> list1 = entry.getValue();
+
+            Collections.sort(list1, new PhoneNumberComparator());
+
+
+            System.out.println(letter + ": " + list1);
+        }
+    }
+
+    public static void main(String[] args) {
+        List<Contact> contacts = Arrays.asList(
+                new Contact("Alice", "+12345"),
+                new Contact("Bob", "+67890"),
+                new Contact("Alice", "+54321"),
+                new Contact("Charlie", "+11111"),
+                new Contact("Bob", "+22222"),
+                new Contact("Alice", "+99999")
+        );
+
+        groupAndSortContacts(contacts);
+    }
+}
 
