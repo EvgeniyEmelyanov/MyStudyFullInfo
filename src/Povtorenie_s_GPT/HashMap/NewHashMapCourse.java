@@ -416,7 +416,11 @@ class HashMap_2_8 {
             Collections.sort(list1, new PhoneNumberComparator());
 
 
-            System.out.println(letter + ": " + list1);
+            System.out.println(letter + ": ");
+            for (Contact contact : list1) {
+                System.out.println(" " + contact.getName() + " - " + contact.getPhone());
+            }
+            System.out.println();
         }
     }
 
@@ -434,3 +438,317 @@ class HashMap_2_8 {
     }
 }
 
+class HashMap_2_9 {
+    public static void groupByLastLetterAndFindMaxAverage(List<String> words) {
+        Map<String, List<String>> group = new TreeMap<>();
+
+        String biggestLetter = " ";
+        double biggestAverage = 0;
+
+        for (String word : words) {
+            String letter = word.substring(word.length() - 1);
+
+            if (!group.containsKey(letter)) {
+                group.put(letter, new ArrayList<>());
+            }
+            group.get(letter).add(word);
+
+
+        }
+
+        List<String> words1 = new ArrayList<>();
+        for (Map.Entry<String, List<String>> entry : group.entrySet()) {
+            String letter = entry.getKey();
+            List<String> list1 = entry.getValue();
+
+            int letterCount = 0;
+            for (String letters : list1) {
+                letterCount += letters.length();
+            }
+
+            double average = (double) letterCount / list1.size();
+
+            if (average > biggestAverage) {
+                biggestAverage = average;
+                biggestLetter = letter;
+                words1 = list1;
+            }
+
+
+        }
+        String format = String.format("%.2f", biggestAverage);
+
+
+        Collections.sort(words1);
+
+        System.out.println("Буква: " + biggestLetter);
+        System.out.println("Средняя длина: " + format);
+        System.out.println("Слова:" + words1);
+
+    }
+
+    public static void main(String[] args) {
+        List<String> words = Arrays.asList(
+                "apple", "home", "tree", "code", "bed", "lead", "need", "red"
+        );
+
+        groupByLastLetterAndFindMaxAverage(words);
+    }
+}
+
+class ListOrder {
+    private String name;
+    private String country;
+
+    public ListOrder(String name, String country) {
+        this.name = name;
+        this.country = country;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+}
+
+class HashMap_2_10 {
+    public static void countOrdersPerCountry(List<ListOrder> orders) {
+        Map<String, Map<String, Integer>> map = new HashMap<>();
+
+        for (ListOrder order : orders) {
+            String country = order.getCountry();
+            String name = order.getName();
+
+            Map<String, Integer> innerMap = map.computeIfAbsent(name, k -> new HashMap<>());
+
+            innerMap.put(country, innerMap.getOrDefault(country, 0) + 1);
+        }
+
+        for (Map.Entry<String, Map<String, Integer>> entry : map.entrySet()) {
+            String name = entry.getKey();
+            Map<String, Integer> innerMap = entry.getValue();
+
+            System.out.println(name + ": " + innerMap);
+        }
+
+
+    }
+
+    public static void main(String[] args) {
+        List<ListOrder> orders = Arrays.asList(
+                new ListOrder("Alice", "USA"),
+                new ListOrder("Bob", "Germany"),
+                new ListOrder("Alice", "Canada"),
+                new ListOrder("Alice", "USA"),
+                new ListOrder("Bob", "Germany"),
+                new ListOrder("Alice", "France"),
+                new ListOrder("Bob", "France"),
+                new ListOrder("Charlie", "Italy"),
+                new ListOrder("Bob", "Germany")
+        );
+
+        countOrdersPerCountry(orders);
+    }
+}
+
+
+class HashMap_2_11 {
+    public static void countOrdersPerCountry(List<ListOrder> orders) {
+        Map<String, Map<String, Integer>> map = new TreeMap<>();
+
+        for (ListOrder order : orders) {
+            String name = order.getName();
+            String country = order.getCountry();
+
+            if (!map.containsKey(name)) {
+                map.put(name, new TreeMap<>());
+            }
+
+            Map<String, Integer> innerMap = map.get(name);
+
+            innerMap.put(country, innerMap.getOrDefault(country, 0) + 1);
+        }
+
+        for (Map.Entry<String, Map<String, Integer>> entry : map.entrySet()) {
+            String name = entry.getKey();
+            Map<String, Integer> innerMap = entry.getValue();
+
+
+            System.out.println(name + ": " + innerMap);
+        }
+
+
+    }
+
+    public static void main(String[] args) {
+        List<ListOrder> orders = Arrays.asList(
+                new ListOrder("Alice", "USA"),
+                new ListOrder("Bob", "Germany"),
+                new ListOrder("Alice", "Canada"),
+                new ListOrder("Alice", "USA"),
+                new ListOrder("Bob", "Germany"),
+                new ListOrder("Alice", "France"),
+                new ListOrder("Bob", "France"),
+                new ListOrder("Charlie", "Italy"),
+                new ListOrder("Bob", "Germany")
+        );
+
+        countOrdersPerCountry(orders);
+    }
+}
+
+class HashMap_2_12 {
+    public static void sortByCity(Map<String, String> people) {
+        Map<String, List<String>> group = new TreeMap<>();
+
+        for (Map.Entry<String, String> entry : people.entrySet()) {
+            String name = entry.getKey();
+            String city = entry.getValue();
+
+            if (!group.containsKey(city)) {
+                group.put(city, new ArrayList<>());
+            }
+            group.get(city).add(name);
+        }
+
+        for (Map.Entry<String, List<String>> entry : group.entrySet()) {
+            String city = entry.getKey();
+            List<String> list = entry.getValue();
+            Collections.sort(list);
+
+            System.out.println(city + ": " + list);
+        }
+
+    }
+
+    public static void main(String[] args) {
+        Map<String, String> people = new HashMap<>();
+        people.put("Alice", "Paris");
+        people.put("Bob", "Berlin");
+        people.put("Charlie", "Paris");
+        people.put("David", "London");
+        people.put("Eve", "Berlin");
+
+        sortByCity(people);
+
+    }
+}
+
+class HashMap_2_13 {
+    public static void sortByCountry(Map<String, String> people) {
+        Map<String, List<String>> group = new TreeMap<>();
+
+        for (Map.Entry<String, String> entry : people.entrySet()) {
+            String name = entry.getKey();
+            String country = entry.getValue();
+
+            List<String> names = group.computeIfAbsent(country, k -> new ArrayList<>());
+            names.add(name);
+
+        }
+        for (Map.Entry<String, List<String>> entry : group.entrySet()) {
+            String country = entry.getKey();
+            List<String> names = entry.getValue();
+
+            Collections.sort(names);
+
+            System.out.println(country + ": " + names);
+        }
+
+
+    }
+
+    public static void main(String[] args) {
+        Map<String, String> people = new HashMap<>();
+        people.put("Alice", "Paris");
+        people.put("Bob", "Berlin");
+        people.put("Charlie", "Paris");
+        people.put("David", "London");
+        people.put("Eve", "Berlin");
+
+        sortByCountry(people);
+
+    }
+}
+
+class HashMap_2_14 {
+    public static void sortByCity(String str) {
+        Map<Character, Integer> map = new TreeMap<>();
+
+        for (char word : str.trim().toLowerCase().toCharArray()) {
+            if (Character.isLetter(word)) {
+                if (!map.containsKey(word)) {
+                    map.put(word, 1);
+                } else {
+                    map.put(word, map.get(word) + 1);
+                }
+            }
+
+        }
+        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+            Character c = entry.getKey();
+            Integer count = entry.getValue();
+
+
+            System.out.println(count + ": " + c);
+        }
+
+
+    }
+
+    public static void main(String[] args) {
+        String srt = "banana apple";
+
+        sortByCity(srt);
+    }
+}
+
+
+class HashMap_2_15 {
+    public static void sortByLetter(String words, String vowelsList) {
+        Map<Character, Integer> consonants = new TreeMap<>();
+        Map<Character, Integer> vowelsMap = new TreeMap<>();
+
+        for (char word : words.toCharArray()) {
+            if (Character.isLetter(word)) {
+                if (vowelsList.contains(String.valueOf(word))) {
+                    vowelsMap.put(word, vowelsMap.getOrDefault(word, 0) + 1);
+                } else {
+                    consonants.put(word, consonants.getOrDefault(word, 0) + 1);
+                }
+
+            }
+
+        }
+        System.out.println("Согласные: ");
+
+        for (Map.Entry<Character, Integer> entry : consonants.entrySet()) {
+            Character c = entry.getKey();
+            Integer count = entry.getValue();
+
+            System.out.println(count + ": " + c);
+        }
+
+
+        System.out.println("\nГласные : ");
+
+        for (Map.Entry<Character, Integer> entry : vowelsMap.entrySet()) {
+            Character c = entry.getKey();
+            Integer count = entry.getValue();
+
+            System.out.println(count + ": " + c);
+        }
+
+    }
+
+    public static void main(String[] args) {
+        String vowelsList = "aeiou";
+        String words = "banana apple";
+        sortByLetter(words, vowelsList);
+
+
+    }
+}
