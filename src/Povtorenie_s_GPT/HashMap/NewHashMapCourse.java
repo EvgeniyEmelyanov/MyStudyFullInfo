@@ -52,13 +52,7 @@ class NewHashMapCourse {
     }
 
     public static void main(String[] args) {
-        List<Contact> contacts = new ArrayList<>(asList(
-                new Contact("Alice", "+12345"),
-                new Contact("Anton", "+99999"),
-                new Contact("Bob", "+23456"),
-                new Contact("Boris", "+88888"),
-                new Contact("Charlie", "+34567")
-        ));
+        List<Contact> contacts = new ArrayList<>(asList(new Contact("Alice", "+12345"), new Contact("Anton", "+99999"), new Contact("Bob", "+23456"), new Contact("Boris", "+88888"), new Contact("Charlie", "+34567")));
 
         Map<String, List<Contact>> group = groupByFirstLetter(contacts);
 
@@ -87,13 +81,7 @@ class NewHashMapCourse2 {
     }
 
     public static void main(String[] args) {
-        List<Contact> contacts = new ArrayList<>(asList(
-                new Contact("Alice", "+12345"),
-                new Contact("Anton", "+99999"),
-                new Contact("Bob", "+23456"),
-                new Contact("Boris", "+88888"),
-                new Contact("Charlie", "+34567")
-        ));
+        List<Contact> contacts = new ArrayList<>(asList(new Contact("Alice", "+12345"), new Contact("Anton", "+99999"), new Contact("Bob", "+23456"), new Contact("Boris", "+88888"), new Contact("Charlie", "+34567")));
 
         Map<String, List<Contact>> group = groupByFirstLetter(contacts);
 
@@ -163,9 +151,7 @@ class HashMap_2_1 {
     }
 
     public static void main(String[] args) {
-        List<String> words = Arrays.asList(
-                "apple", "banana", "Avocado", "blueberry", "apricot", "Blackberry", "cherry"
-        );
+        List<String> words = Arrays.asList("apple", "banana", "Avocado", "blueberry", "apricot", "Blackberry", "cherry");
         Map<String, List<String>> group = groupByFirstLetter(words);
         for (Map.Entry<String, List<String>> entry : group.entrySet()) {
             String letter = entry.getKey();
@@ -192,9 +178,7 @@ class HashMap_2_3 {
     }
 
     public static void main(String[] args) {
-        List<String> words = Arrays.asList(
-                "apple", "banana", "Avocado", "blueberry", "apricot", "Blackberry", "cherry"
-        );
+        List<String> words = Arrays.asList("apple", "banana", "Avocado", "blueberry", "apricot", "Blackberry", "cherry");
 
         Map<String, List<String>> group = groupByFirstLetter(words);
         for (Map.Entry<String, List<String>> entry : group.entrySet()) {
@@ -208,8 +192,7 @@ class HashMap_2_3 {
                 letterCount += list1.get(i).length();
 
             }
-            System.out.println(letter + "(" + list1.size() + " солва): " + list1 + "- общая длинна: "
-                    + letterCount);
+            System.out.println(letter + "(" + list1.size() + " солва): " + list1 + "- общая длинна: " + letterCount);
         }
     }
 }
@@ -230,9 +213,7 @@ class HashMap_2_4 {
 
 
     public static void main(String[] args) {
-        List<String> words = Arrays.asList(
-                "apple", "banana", "Avocado", "blueberry", "apricot", "Blackberry", "cherry"
-        );
+        List<String> words = Arrays.asList("apple", "banana", "Avocado", "blueberry", "apricot", "Blackberry", "cherry");
 
         Map<String, List<String>> group = groupByFirstLetter(words);
         for (Map.Entry<String, List<String>> entry : group.entrySet()) {
@@ -250,8 +231,7 @@ class HashMap_2_4 {
 
             String format = String.format("%.2f", average);
 
-            System.out.println(letter + "(" + list1.size() + " слова): " + list1
-                    + " - общая длина: " + letterCount + ", средняя: " + format);
+            System.out.println(letter + "(" + list1.size() + " слова): " + list1 + " - общая длина: " + letterCount + ", средняя: " + format);
         }
 
 
@@ -275,9 +255,7 @@ class HashMap_2_5 {
 
 
     public static void main(String[] args) {
-        List<String> words = Arrays.asList(
-                "Alice", "Anton", "Bob", "Boris", "Charlie"
-        );
+        List<String> words = Arrays.asList("Alice", "Anton", "Bob", "Boris", "Charlie");
 
         Map<String, List<String>> group = groupByFirstLetter(words);
 
@@ -349,9 +327,7 @@ class HashMap_2_6 {
     }
 
     public static void main(String[] args) {
-        List<String> names = Arrays.asList(
-                "Alice", "Anton", "Bob", "Boris", "Charlie"
-        );
+        List<String> names = Arrays.asList("Alice", "Anton", "Bob", "Boris", "Charlie");
         groupAndCountVowels(names);
     }
 }
@@ -375,14 +351,7 @@ class HashMap_2_7 {
     }
 
     public static void main(String[] args) {
-        List<Contact> contacts = Arrays.asList(
-                new Contact("Alice", "+12345"),
-                new Contact("Bob", "+67890"),
-                new Contact("Alice", "+54321"),
-                new Contact("Charlie", "+11111"),
-                new Contact("Bob", "+22222"),
-                new Contact("Alice", "+99999")
-        );
+        List<Contact> contacts = Arrays.asList(new Contact("Alice", "+12345"), new Contact("Bob", "+67890"), new Contact("Alice", "+54321"), new Contact("Charlie", "+11111"), new Contact("Bob", "+22222"), new Contact("Alice", "+99999"));
 
         countPhonesPerPerson(contacts);
     }
@@ -425,14 +394,7 @@ class HashMap_2_8 {
     }
 
     public static void main(String[] args) {
-        List<Contact> contacts = Arrays.asList(
-                new Contact("Alice", "+12345"),
-                new Contact("Bob", "+67890"),
-                new Contact("Alice", "+54321"),
-                new Contact("Charlie", "+11111"),
-                new Contact("Bob", "+22222"),
-                new Contact("Alice", "+99999")
-        );
+        List<Contact> contacts = Arrays.asList(new Contact("Alice", "+12345"), new Contact("Bob", "+67890"), new Contact("Alice", "+54321"), new Contact("Charlie", "+11111"), new Contact("Bob", "+22222"), new Contact("Alice", "+99999"));
 
         groupAndSortContacts(contacts);
     }
@@ -488,9 +450,7 @@ class HashMap_2_9 {
     }
 
     public static void main(String[] args) {
-        List<String> words = Arrays.asList(
-                "apple", "home", "tree", "code", "bed", "lead", "need", "red"
-        );
+        List<String> words = Arrays.asList("apple", "home", "tree", "code", "bed", "lead", "need", "red");
 
         groupByLastLetterAndFindMaxAverage(words);
     }
@@ -538,17 +498,7 @@ class HashMap_2_10 {
     }
 
     public static void main(String[] args) {
-        List<ListOrder> orders = Arrays.asList(
-                new ListOrder("Alice", "USA"),
-                new ListOrder("Bob", "Germany"),
-                new ListOrder("Alice", "Canada"),
-                new ListOrder("Alice", "USA"),
-                new ListOrder("Bob", "Germany"),
-                new ListOrder("Alice", "France"),
-                new ListOrder("Bob", "France"),
-                new ListOrder("Charlie", "Italy"),
-                new ListOrder("Bob", "Germany")
-        );
+        List<ListOrder> orders = Arrays.asList(new ListOrder("Alice", "USA"), new ListOrder("Bob", "Germany"), new ListOrder("Alice", "Canada"), new ListOrder("Alice", "USA"), new ListOrder("Bob", "Germany"), new ListOrder("Alice", "France"), new ListOrder("Bob", "France"), new ListOrder("Charlie", "Italy"), new ListOrder("Bob", "Germany"));
 
         countOrdersPerCountry(orders);
     }
@@ -584,17 +534,7 @@ class HashMap_2_11 {
     }
 
     public static void main(String[] args) {
-        List<ListOrder> orders = Arrays.asList(
-                new ListOrder("Alice", "USA"),
-                new ListOrder("Bob", "Germany"),
-                new ListOrder("Alice", "Canada"),
-                new ListOrder("Alice", "USA"),
-                new ListOrder("Bob", "Germany"),
-                new ListOrder("Alice", "France"),
-                new ListOrder("Bob", "France"),
-                new ListOrder("Charlie", "Italy"),
-                new ListOrder("Bob", "Germany")
-        );
+        List<ListOrder> orders = Arrays.asList(new ListOrder("Alice", "USA"), new ListOrder("Bob", "Germany"), new ListOrder("Alice", "Canada"), new ListOrder("Alice", "USA"), new ListOrder("Bob", "Germany"), new ListOrder("Alice", "France"), new ListOrder("Bob", "France"), new ListOrder("Charlie", "Italy"), new ListOrder("Bob", "Germany"));
 
         countOrdersPerCountry(orders);
     }
@@ -752,3 +692,236 @@ class HashMap_2_15 {
 
     }
 }
+
+class HashMap_2_16 {
+    public static void sortByLetters(String text, String vowelsList) {
+        Map<Character, Integer> vowels = new TreeMap<>();
+        Map<Character, Integer> consonants = new TreeMap<>();
+
+        for (char word : text.trim().toLowerCase().toCharArray()) {
+            if (Character.isLetter(word)) {
+                if (vowelsList.contains(String.valueOf(word))) {
+                    vowels.put(word, vowels.getOrDefault(word, 0) + 1);
+                } else {
+                    consonants.put(word, consonants.getOrDefault(word, 0) + 1);
+                }
+            }
+
+        }
+
+        System.out.println("Согласные: ");
+
+        for (Map.Entry<Character, Integer> entry : consonants.entrySet()) {
+            Character c = entry.getKey();
+            Integer count = entry.getValue();
+            System.out.println(c + ": " + count);
+        }
+
+        System.out.println("\nГласные: ");
+        for (Map.Entry<Character, Integer> entry : vowels.entrySet()) {
+            Character c = entry.getKey();
+            Integer count = entry.getValue();
+
+            System.out.println(c + ": " + count);
+
+        }
+
+    }
+
+    public static void main(String[] args) {
+        String text = "Java is a powerful and popular programming language!";
+        String vowelsList = "aeiou";
+
+        sortByLetters(text, vowelsList);
+
+    }
+}
+
+
+class Movie {
+    private String title;
+    private String genre;
+
+    public Movie(String title, String genre) {
+        this.title = title;
+        this.genre = genre;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+}
+
+/*class HashMap_2_17 {
+    public static void groupMoviesByGenre(List<Movies> movies) {
+        Map<String, List<String>> group = new TreeMap<>();
+
+        for (Movies movie : movies) {
+            String genre = movie.getGenre();
+            String title = movie.getTitle();
+            if (!group.containsKey(genre)) {
+                group.put(genre, new ArrayList<>());
+            }
+            group.get(genre).add(title);
+        }
+
+        for (Map.Entry<String, List<String>> entry : group.entrySet()) {
+            String genre = entry.getKey();
+            List<String> listTitle = entry.getValue();
+
+            Collections.sort(listTitle);
+
+            System.out.println(genre + ": " + listTitle);
+        }
+    }
+
+    public static void main(String[] args) {
+        List<Movies> movies = Arrays.asList(new Movies("Titanic", "Drama"), new Movies("Avengers", "Action"), new Movies("The Mask", "Comedy"), new Movies("Matrix", "Action"), new Movies("Forrest Gump", "Drama"), new Movies("Home Alone", "Comedy"));
+
+        groupMoviesByGenre(movies);
+    }
+}*/
+
+
+class Person {
+    private String country;
+    private String language;
+
+    public Person(String country, String language) {
+        this.country = country;
+        this.language = language;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+}
+
+class HashMap_2_18 {
+    public static void groupLanguagesByCountry(List<Person> people) {
+        Map<String, List<String>> group = new TreeMap<>();
+
+        for (Person person : people) {
+            String country = person.getCountry();
+            String language = person.getLanguage();
+
+            if (!group.containsKey(country)) {
+                group.put(country, new ArrayList<>());
+            }
+            group.get(country).add(language);
+        }
+
+        for (Map.Entry<String, List<String>> entry : group.entrySet()) {
+/*            String country = entry.getKey();
+            List<String> listLanguage = entry.getValue();
+            List<String> listWithoutDoblicates = new ArrayList<>();
+
+            for (String language : listLanguage) {
+                if (!listWithoutDoblicates.contains(language)) {
+                    listWithoutDoblicates.add(language);
+                }
+            }
+
+            Collections.sort(listWithoutDoblicates);
+
+            System.out.println(country + ": " + listWithoutDoblicates);
+            ЭТО КЛАССИЧЕСКИЙ СПОСОБ БЕЗ ИСПОЛЬЗОВАНИЯ SET*/
+
+
+            String country = entry.getKey();
+            List<String> listLanguage = entry.getValue();
+
+            Set<String> temp = new HashSet<>(listLanguage);
+            listLanguage = new ArrayList<>(temp);
+
+            Collections.sort(listLanguage);
+
+            System.out.println(country + ": " + listLanguage);
+        }
+
+    }
+
+    public static void main(String[] args) {
+        List<Person> people = Arrays.asList(new Person("USA", "English"), new Person("Canada", "English"), new Person("Canada", "French"), new Person("Germany", "German"), new Person("USA", "Spanish"), new Person("USA", "English"),     // повтор
+                new Person("Canada", "French")    // повтор
+        );
+
+        groupLanguagesByCountry(people);
+    }
+}
+
+class Movies {
+    private String title;
+    private String genre;
+    private String studio;
+
+    public Movies(String title, String genre, String studio) {
+        this.title = title;
+        this.genre = genre;
+        this.studio = studio;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public String getStudio() {
+        return studio;
+    }
+}
+
+class HashMap_2_19 {
+    public static void countMoviesByGenreAndStudio(List<Movies> movies) {
+        Map<String, Map <String,Integer>> group = new TreeMap<>();
+
+        for (Movies movie : movies) {
+            String genre = movie.getGenre();
+            String studio = movie.getStudio();
+            String title = movie.getTitle();
+
+            if (!group.containsKey(genre)) {
+                group.put(genre, new HashMap<>());
+            }
+
+            Map <String,Integer> innerMap = group.get(genre);
+            innerMap.put(studio, innerMap.getOrDefault(studio, 0) + 1);
+
+        }
+
+        for (Map.Entry<String, Map <String, Integer>> entry : group.entrySet()) {
+            String genre = entry.getKey();
+            Map <String,Integer> innerMap = entry.getValue();
+
+            System.out.println(genre + ": " + innerMap);
+        }
+
+    }
+
+    public static void main(String[] args) {
+        List<Movies> movies = Arrays.asList(
+                new Movies("Avengers", "Action", "Marvel"),
+                new Movies("Iron Man", "Action", "Marvel"),
+                new Movies("The Batman", "Action", "Warner"),
+                new Movies("Toy Story", "Comedy", "Pixar"),
+                new Movies("Monsters Inc.", "Comedy", "Pixar"),
+                new Movies("Finding Nemo", "Comedy", "Pixar"),
+                new Movies("Titanic", "Drama", "Paramount")
+        );
+
+        countMoviesByGenreAndStudio(movies);
+    }
+}
+
+
