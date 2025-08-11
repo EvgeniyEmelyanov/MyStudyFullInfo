@@ -910,15 +910,7 @@ class HashMap_2_19 {
     }
 
     public static void main(String[] args) {
-        List<Movies> movies = Arrays.asList(
-                new Movies("Avengers", "Action", "Marvel"),
-                new Movies("Iron Man", "Action", "Marvel"),
-                new Movies("The Batman", "Action", "Warner"),
-                new Movies("Toy Story", "Comedy", "Pixar"),
-                new Movies("Monsters Inc.", "Comedy", "Pixar"),
-                new Movies("Finding Nemo", "Comedy", "Pixar"),
-                new Movies("Titanic", "Drama", "Paramount")
-        );
+        List<Movies> movies = Arrays.asList(new Movies("Avengers", "Action", "Marvel"), new Movies("Iron Man", "Action", "Marvel"), new Movies("The Batman", "Action", "Warner"), new Movies("Toy Story", "Comedy", "Pixar"), new Movies("Monsters Inc.", "Comedy", "Pixar"), new Movies("Finding Nemo", "Comedy", "Pixar"), new Movies("Titanic", "Drama", "Paramount"));
 
         countMoviesByGenreAndStudio(movies);
     }
@@ -969,15 +961,7 @@ class HashMap_2_20 {
     }
 
     public static void main(String[] args) {
-        List<Order> orders = Arrays.asList(
-                new Order("Alice", "Action"),
-                new Order("Bob", "Drama"),
-                new Order("Alice", "Comedy"),
-                new Order("Alice", "Action"),
-                new Order("Bob", "Drama"),
-                new Order("Charlie", "Action"),
-                new Order("Charlie", "Drama")
-        );
+        List<Order> orders = Arrays.asList(new Order("Alice", "Action"), new Order("Bob", "Drama"), new Order("Alice", "Comedy"), new Order("Alice", "Action"), new Order("Bob", "Drama"), new Order("Charlie", "Action"), new Order("Charlie", "Drama"));
 
         countGenresPerClient(orders);
     }
@@ -987,8 +971,18 @@ class HashMap_2_21 {
     public static void countWordsByLength(String text) {
         Map<Integer, Integer> group = new TreeMap<>();
 
-        for (String words : text.toCharArray()) {
+        int count = 0;
+        for (String words : text.trim().split(" ")) {
+            int length = words.length();
 
+            group.put(length, group.getOrDefault(length, 0) + 1);
+
+
+        }
+        for (Map.Entry<Integer, Integer> entry : group.entrySet()) {
+            int wordLength = entry.getKey();
+            int groupLength = entry.getValue();
+            System.out.println(wordLength + " -> " + groupLength);
         }
     }
 
@@ -998,4 +992,201 @@ class HashMap_2_21 {
         countWordsByLength(text);
     }
 }
-123
+
+
+class HashMap_2_22 {
+    public static void findMostFrequentWord(String text) {
+        Map<String, Integer> group = new TreeMap<>();
+
+        for (String words : text.split(" ")) {
+            words = words.trim().toLowerCase().replaceAll("[^a-z]", "");
+
+            group.put(words, group.getOrDefault(words, 0) + 1);
+        }
+        for (Map.Entry<String, Integer> entry : group.entrySet()) {
+            String wordLength = entry.getKey();
+            int groupLength = entry.getValue();
+            System.out.println(wordLength + " -> " + groupLength);
+        }
+
+        int max = 0;
+
+
+        for (int count : group.values()) {
+            if (count > max) {
+                max = count;
+            }
+        }
+
+        System.out.println("\nСамые частые слова (встречаются " + max + " раз):");
+
+        for (Map.Entry<String, Integer> entry : group.entrySet()) {
+            if (entry.getValue() == max) {
+                System.out.println(entry.getKey());
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        String text = "Java is powerful. Java is versatile. Java is everywhere.";
+
+        findMostFrequentWord(text);
+    }
+}
+
+class Book {
+    private String title;
+    private String author;
+    private String genre;
+
+    public Book (String title, String author) {
+        this.title = title;
+        this.author = author;
+    }
+
+    public Book(String title, String author, String genre) {
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+}
+
+class HashMap_2_23 {
+    public static void countBooksByAuthor(List<Book> list) {
+        Map<String, Integer> group = new TreeMap<>();
+
+        for (Book book : list) {
+            String author = book.getAuthor();
+
+
+                group.put(author, group.getOrDefault(author, 0) + 1);
+
+        }
+
+        for (Map.Entry<String, Integer> entry : group.entrySet()) {
+            String author = entry.getKey();
+            int groupLength = entry.getValue();
+
+            System.out.println(author + " -> " + groupLength);
+        }
+
+        int max = 0;
+        for (int count : group.values()) {
+            if (count > max) {
+                max = count;
+
+            }
+        }
+
+
+        System.out.println("\nАвтор, у кого больше всего книг:");
+        for (Map.Entry<String, Integer> entry : group.entrySet()) {
+            if (entry.getValue() == max) {
+                System.out.println(entry.getKey());
+            }
+        }
+
+    }
+
+    public static void main(String[] args) {
+        List<Book> list = Arrays.asList(
+                new Book("1984", "George Orwell"),
+                new Book("Animal Farm", "George Orwell"),
+                new Book("The Trial", "Franz Kafka"),
+                new Book("The Castle", "Franz Kafka"),
+                new Book("The Metamorphosis", "Franz Kafka"),
+                new Book("Brave New World", "Aldous Huxley"));
+
+        countBooksByAuthor(list);
+    }
+}
+
+class HashMap_2_24 {
+    public static void countBooksByAuthor(List<Book> books) {
+        Map<String, Integer> group = new TreeMap<>();
+
+        for (Book book : books) {
+            String author = book.getAuthor();
+
+
+            group.put(author, group.getOrDefault(author, 0) + 1);
+
+        }
+
+        for (Map.Entry<String, Integer> entry : group.entrySet()) {
+            String author = entry.getKey();
+            int groupLength = entry.getValue();
+
+            System.out.println(author + " -> " + groupLength);
+        }
+
+
+
+
+        System.out.println("\nАвторы, у кого больше 2 книг:");
+        for (Map.Entry<String, Integer> entry : group.entrySet()) {
+            if (entry.getValue() >=2) {
+                System.out.println(entry.getKey());
+            }
+        }
+
+    }
+
+    public static void main(String[] args) {
+        List<Book> books = Arrays.asList(
+                new Book("1984", "George Orwell"),
+                new Book("Animal Farm", "George Orwell"),
+                new Book("The Trial", "Franz Kafka"),
+                new Book("The Castle", "Franz Kafka"),
+                new Book("The Metamorphosis", "Franz Kafka"),
+                new Book("Brave New World", "Aldous Huxley"));
+
+        countBooksByAuthor(books);
+    }
+}
+
+
+
+class HashMap_2_25 {
+    public static void countBooksByGenre(List<Book> books_1) {
+        Map<String,Integer> group = new TreeMap<>();
+
+        for (Book book : books_1) {
+            String genre = book.getGenre();
+
+            group.put(genre, group.getOrDefault(genre, 0) + 1);
+        }
+
+        for (Map.Entry<String, Integer> entry : group.entrySet()) {
+            String genre = entry.getKey();
+            int groupLength = entry.getValue();
+
+            System.out.println(genre + " -> " + groupLength);
+        }
+    }
+
+    public static void main(String[] args) {
+        List<Book> books_1 = Arrays.asList(
+                new Book("1984", "George Orwell", "Dystopian"),
+                new Book("Animal Farm", "George Orwell", "Satire"),
+                new Book("The Trial", "Franz Kafka", "Drama"),
+                new Book("The Castle", "Franz Kafka", "Drama"),
+                new Book("Brave New World", "Aldous Huxley", "Dystopian"),
+                new Book("Solaris", "Stanislaw Lem", "Sci-Fi")
+        );
+
+        countBooksByGenre(books_1);
+    }
+}
