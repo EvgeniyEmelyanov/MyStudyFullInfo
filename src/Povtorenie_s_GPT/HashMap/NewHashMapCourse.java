@@ -884,7 +884,7 @@ class Movies {
 
 class HashMap_2_19 {
     public static void countMoviesByGenreAndStudio(List<Movies> movies) {
-        Map<String, Map <String,Integer>> group = new TreeMap<>();
+        Map<String, Map<String, Integer>> group = new TreeMap<>();
 
         for (Movies movie : movies) {
             String genre = movie.getGenre();
@@ -895,14 +895,14 @@ class HashMap_2_19 {
                 group.put(genre, new HashMap<>());
             }
 
-            Map <String,Integer> innerMap = group.get(genre);
+            Map<String, Integer> innerMap = group.get(genre);
             innerMap.put(studio, innerMap.getOrDefault(studio, 0) + 1);
 
         }
 
-        for (Map.Entry<String, Map <String, Integer>> entry : group.entrySet()) {
+        for (Map.Entry<String, Map<String, Integer>> entry : group.entrySet()) {
             String genre = entry.getKey();
-            Map <String,Integer> innerMap = entry.getValue();
+            Map<String, Integer> innerMap = entry.getValue();
 
             System.out.println(genre + ": " + innerMap);
         }
@@ -924,4 +924,77 @@ class HashMap_2_19 {
     }
 }
 
+class Order {
+    private String clientName;
+    private String genre;
 
+    public Order(String clientName, String genre) {
+        this.clientName = clientName;
+        this.genre = genre;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+}
+
+class HashMap_2_20 {
+    public static void countGenresPerClient(List<Order> orders) {
+        Map<String, Map<String, Integer>> group = new TreeMap<>();
+
+        for (Order order : orders) {
+            String name = order.getClientName();
+            String genreMovie = order.getGenre();
+
+            if (!group.containsKey(name)) {
+                group.put(name, new HashMap<>());
+            }
+
+            Map<String, Integer> innerMap = group.get(name);
+            innerMap.put(genreMovie, innerMap.getOrDefault(genreMovie, 0) + 1);
+
+        }
+
+        for (Map.Entry<String, Map<String, Integer>> entry : group.entrySet()) {
+            String name = entry.getKey();
+            Map<String, Integer> integerMap = entry.getValue();
+
+            System.out.println(name + " ->" + integerMap);
+
+        }
+    }
+
+    public static void main(String[] args) {
+        List<Order> orders = Arrays.asList(
+                new Order("Alice", "Action"),
+                new Order("Bob", "Drama"),
+                new Order("Alice", "Comedy"),
+                new Order("Alice", "Action"),
+                new Order("Bob", "Drama"),
+                new Order("Charlie", "Action"),
+                new Order("Charlie", "Drama")
+        );
+
+        countGenresPerClient(orders);
+    }
+}
+
+class HashMap_2_21 {
+    public static void countWordsByLength(String text) {
+        Map<Integer, Integer> group = new TreeMap<>();
+
+        for (String words : text.toCharArray()) {
+
+        }
+    }
+
+    public static void main(String[] args) {
+        String text = "Java is awesome and powerful language";
+
+        countWordsByLength(text);
+    }
+}
