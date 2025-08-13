@@ -1421,7 +1421,7 @@ class HashMap_2_30 {
 
 class HashMap_2_31 {
     public static void findMostPopularGenre(List<Order> orders) {
-        Map<String,  List<String>> group = new TreeMap<>();
+        Map<String, List<String>> group = new TreeMap<>();
 
         for (Order order : orders) {
             String name = order.getClientName();
@@ -1460,3 +1460,164 @@ class HashMap_2_31 {
 
     }
 }
+
+class HashMap_2_33 {
+    public static void countUniqueBooksPerClient(List<Order> orders) {
+        Map<String, Set<String>> group = new TreeMap<>();
+
+        for (Order order : orders) {
+            String name = order.getClientName();
+            String genre = order.getGenre();
+
+            group.computeIfAbsent(name, k -> new TreeSet<>()).add(genre);
+
+        }
+
+        for (Map.Entry<String, Set<String>> entry : group.entrySet()) {
+            String name = entry.getKey();
+            Set<String> genres = entry.getValue();
+
+
+            System.out.println(name + " -> " + genres.size() + " " + genres);
+        }
+
+
+    }
+
+
+    public static void main(String[] args) {
+        List<Order> orders = Arrays.asList(
+                new Order("Alice", "War and Peace"),
+                new Order("Alice", "1984"),
+                new Order("Alice", "1984"),           // повтор
+                new Order("Bob", "The Lord of the Rings"),
+                new Order("Bob", "The Hobbit"),
+                new Order("Charlie", "1984"),
+                new Order("Charlie", "1984")          // повтор
+        );
+
+        countUniqueBooksPerClient(orders);
+    }
+}
+
+class HashMap_2_34 {
+    public static void findMostPopularGenre(List<Order> orders) {
+        Map<String, Set<String>> group = new TreeMap<>();
+
+        for (Order order : orders) {
+            String name = order.getClientName();
+            String genre = order.getGenre();
+
+            group.computeIfAbsent(name, k -> new TreeSet<>()).add(genre);
+        }
+
+        for (Map.Entry<String, Set<String>> entry : group.entrySet()) {
+            String name = entry.getKey();
+            Set<String> genres = entry.getValue();
+
+            String longestGenre = "";
+
+            for (String genre : genres) {
+                if (genre.length() > longestGenre.length()) {
+                    longestGenre = genre;
+                }
+            }
+            System.out.println(name + " -> " + longestGenre);
+
+
+        }
+
+
+    }
+
+    public static void main(String[] args) {
+        List<Order> orders = Arrays.asList(
+                new Order("Alice", "War and Peace"),
+                new Order("Alice", "1984"),
+                new Order("Alice", "1984"),
+                new Order("Bob", "The Lord of the Rings"),
+                new Order("Bob", "It"),
+                new Order("Charlie", "1984"),
+                new Order("Charlie", "The Unbearable Lightness of Being")
+        );
+        findMostPopularGenre(orders);
+
+
+    }
+}
+
+class HashMap_2_35 {
+    public static void findAuthorWithMostGenres(List<Book> books) {
+        Map<String, Set<String>> group = new TreeMap<>();
+
+        for (Book book : books) {
+            String name = book.getAuthor();
+            String genre = book.getGenre();
+
+            group.computeIfAbsent(name, k -> new TreeSet<>()).add(genre);
+
+        }
+        for (Map.Entry<String, Set<String>> entry : group.entrySet()) {
+            String name = entry.getKey();
+            Set<String> genres = entry.getValue();
+
+            System.out.println(name + " -> " + genres.size() + " " + genres);
+
+
+        }
+
+
+        int max = 0;
+        for (Set<String> generes : group.values()) {
+            if (generes.size() > max) {
+                max = generes.size();
+            }
+        }
+        System.out.println("\nАвтор(ы) с наибольшим количеством жанров:");
+        for (Map.Entry<String, Set<String>> entry : group.entrySet()) {
+            if (entry.getValue().size() == max) {
+                System.out.println(entry.getKey());
+
+            }
+        }
+    }
+
+
+    public static void main(String[] args) {
+        List<Book> books = Arrays.asList(
+                new Book("1984", "George Orwell", "Dystopian"),
+                new Book("Animal Farm", "George Orwell", "Satire"),
+                new Book("Brave New World", "Aldous Huxley", "Dystopian"),
+                new Book("Island", "Aldous Huxley", "Philosophy"),
+                new Book("The Trial", "Franz Kafka", "Drama"),
+                new Book("The Castle", "Franz Kafka", "Drama"),
+                new Book("Solaris", "Stanislaw Lem", "Sci-Fi")
+        );
+
+        findAuthorWithMostGenres(books);
+    }
+}
+
+
+class TaskPutIfAbsent {
+    public static void main(String[] args) {
+        Map<String, String> phoneBook = new TreeMap<>();
+        List<String[]> data = Arrays.asList(
+                new String[]{"Alice", "+12345"},
+                new String[]{"Bob", "+67890"},
+                new String[]{"Alice", "+54321"}
+        );
+
+        for (int i = 0; i < data.size(); i++) {
+            String[] row = data.get(i);
+            String name = row[0];
+            String phone = row[1];
+
+            phoneBook.putIfAbsent(name, phone);
+        }
+        System.out.println(phoneBook);
+        }
+
+    }
+    
+
