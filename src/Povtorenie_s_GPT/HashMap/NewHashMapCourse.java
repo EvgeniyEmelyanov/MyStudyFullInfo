@@ -1621,3 +1621,106 @@ class TaskPutIfAbsent {
     }
     
 
+class TaskMerge {
+    public static void main(String[] args) {
+        String text = "Java java code map code";
+        Map<String, Integer> freq = new HashMap<>();
+
+        for (String words : text.toLowerCase().split(" ")) {
+            String word = words.trim();
+            freq.merge(word, 1, (oldVal, newVal) -> oldVal + newVal);
+
+
+        }
+
+        System.out.println(freq);
+    }
+}
+
+class TaskCompute {
+    public static void main(String[] args) {
+        Map<String, Integer> scores = new HashMap<>();
+        scores.put("Alice", 20);
+        scores.put("Bob", 15);
+
+        String player = "Charlie";
+
+        scores.compute("Alice", (k,v) -> (v==null)? 10: v+10);
+        scores.compute("Bob", (k,v) -> (v==null)? 10: v+10);
+        scores.compute(player, (k,v) -> (v==null)? 10: v+10);
+
+
+
+        System.out.println(scores);
+    }
+}
+
+class TaskComputeDecrease {
+    public static void main(String[] args) {
+        Map<String, Integer> scores = new HashMap<>();
+        scores.put("Alice", 15);
+        scores.put("Bob", 8);
+
+        String player = "Bob"; // попробуй также "Charlie" которого нет
+
+        scores.compute(player, (k,v) -> {
+            if (v==null) return null;
+            int nv = v-10;
+            return (nv <=0) ? null :nv;
+                });
+
+        System.out.println(scores);
+    }
+}
+
+class TaskComputeIfPresentBonus {
+    public static void main(String[] args) {
+        Map<String, Integer> scores = new HashMap<>();
+        scores.put("Alice", 20);
+        scores.put("Bob", 15);
+
+        List<String> candidates = Arrays.asList("Alice", "Charlie", "Bob");
+
+        // TODO: пройтись по candidates и добавить +5 только существующим (computeIfPresent)
+        for (String candidate : candidates) {
+            scores.computeIfPresent(candidate, (k,v) -> v+5);
+        }
+
+        System.out.println(scores);
+    }
+}
+
+class TaskReplaceConditional {
+    public static void main(String[] args) {
+        Map<String, String> phoneBook = new TreeMap<>();
+        phoneBook.put("Alice", "+12345");
+        phoneBook.put("Bob", "+67890");
+
+        // TODO: заменить номер Alice на "+99999" только если сейчас "+12345"
+/*        if (phoneBook.get("Alice").equals("+12345")) {
+            phoneBook.replace("Alice", "+99999");
+        }*/
+        phoneBook.replace("Alice", "+12345", "+99999");
+
+        System.out.println(phoneBook);
+    }
+}
+
+class TaskReplaceAllBonusCap {
+    public static void main(String[] args) {
+        Map<String, Integer> scores = new HashMap<>();
+        scores.put("Alice", 24);
+        scores.put("Bob", 25);
+        scores.put("Charlie", 10);
+
+        // TODO: через replaceAll добавить +3, но значения >=25 не менять
+
+        scores.replaceAll((k,v) -> {
+            if (v >=25 ) return v;
+            return v+3;
+        });
+
+
+        System.out.println(scores);
+    }
+}
