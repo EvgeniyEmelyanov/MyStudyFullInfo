@@ -1616,10 +1616,10 @@ class TaskPutIfAbsent {
             phoneBook.putIfAbsent(name, phone);
         }
         System.out.println(phoneBook);
-        }
-
     }
-    
+
+}
+
 
 class TaskMerge {
     public static void main(String[] args) {
@@ -1645,10 +1645,9 @@ class TaskCompute {
 
         String player = "Charlie";
 
-        scores.compute("Alice", (k,v) -> (v==null)? 10: v+10);
-        scores.compute("Bob", (k,v) -> (v==null)? 10: v+10);
-        scores.compute(player, (k,v) -> (v==null)? 10: v+10);
-
+        scores.compute("Alice", (k, v) -> (v == null) ? 10 : v + 10);
+        scores.compute("Bob", (k, v) -> (v == null) ? 10 : v + 10);
+        scores.compute(player, (k, v) -> (v == null) ? 10 : v + 10);
 
 
         System.out.println(scores);
@@ -1663,11 +1662,11 @@ class TaskComputeDecrease {
 
         String player = "Bob"; // попробуй также "Charlie" которого нет
 
-        scores.compute(player, (k,v) -> {
-            if (v==null) return null;
-            int nv = v-10;
-            return (nv <=0) ? null :nv;
-                });
+        scores.compute(player, (k, v) -> {
+            if (v == null) return null;
+            int nv = v - 10;
+            return (nv <= 0) ? null : nv;
+        });
 
         System.out.println(scores);
     }
@@ -1683,7 +1682,7 @@ class TaskComputeIfPresentBonus {
 
         // TODO: пройтись по candidates и добавить +5 только существующим (computeIfPresent)
         for (String candidate : candidates) {
-            scores.computeIfPresent(candidate, (k,v) -> v+5);
+            scores.computeIfPresent(candidate, (k, v) -> v + 5);
         }
 
         System.out.println(scores);
@@ -1715,9 +1714,9 @@ class TaskReplaceAllBonusCap {
 
         // TODO: через replaceAll добавить +3, но значения >=25 не менять
 
-        scores.replaceAll((k,v) -> {
-            if (v >=25 ) return v;
-            return v+3;
+        scores.replaceAll((k, v) -> {
+            if (v >= 25) return v;
+            return v + 3;
         });
 
 
@@ -1726,3 +1725,143 @@ class TaskReplaceAllBonusCap {
 }
 
 
+class ForEachExample {
+    public static void main(String[] args) {
+        List<String> words = new ArrayList<>(Arrays.asList("java", "map", "merge", "code"));
+
+        // TODO: вывести все элементы
+        for (String word : words) {
+            if (word.equals("java")) {
+                words.remove(word);
+
+            }
+            System.out.println(word);
+        }
+
+
+        // TODO: здесь попробуй удалить "map" (увидишь, что будет ошибка)
+    }
+}
+
+class ForEachExample1 {
+    public static void main(String[] args) {
+        List<String> words = new ArrayList<>(Arrays.asList("java", "map", "merge", "code"));
+
+        Iterator<String> it = words.iterator(); // получаем итератор
+        while (it.hasNext()) {
+            String word = it.next(); // берём следующий элемент
+            if (word.equals("java")) {
+                it.remove(); // безопасное удаление
+            }
+            System.out.println(word);
+        }
+
+        System.out.println("После удаления: " + words);
+    }
+}
+
+class ForEachExample2 {
+    public static void main(String[] args) {
+        List<String> words = new ArrayList<>(Arrays.asList("java", "map", "merge", "code"));
+
+
+        words.removeIf(word -> word.equals("java"));
+
+        System.out.println(words);
+    }
+}
+
+class IteratorRemoveExample {
+    public static void main(String[] args) {
+        List<String> words = new ArrayList<>(Arrays.asList("java", "map", "merge", "code"));
+
+        Iterator<String> it = words.iterator();
+        while (it.hasNext()) {
+            String word = it.next();
+            // если это "map" → удалить
+            if (word.equals("map")) {
+                it.remove();
+            }
+        }
+
+        System.out.println(words);
+    }
+}
+
+class RemoveIfExample {
+    public static void main(String[] args) {
+        List<String> words = new ArrayList<>(Arrays.asList("java", "map", "merge", "code"));
+
+        words.removeIf(word -> word.equals("map"));
+
+        System.out.println(words);
+    }
+}
+
+class RemoveRareWordsIterator {
+    public static void main(String[] args) {
+        Map<String, Integer> freq = new HashMap<>();
+        freq.put("java", 5);
+        freq.put("map", 2);
+        freq.put("merge", 1);
+        freq.put("code", 4);
+
+        List<Map.Entry<String, Integer>> removed = new ArrayList<>();
+
+        // TODO: пройтись по freq.entrySet() через Iterator и удалить value < 3,
+        //       добавляя удалённые в removed
+
+
+        System.out.println("Осталось: " + freq);
+        System.out.println("Удалили: " + removed);
+    }
+}
+
+class IteratorRemoveFromMap {
+    public static void main(String[] args) {
+        Map<String, Integer> freq = new HashMap<>();
+        freq.put("java", 5);
+        freq.put("map", 2);
+        freq.put("merge", 1);
+        freq.put("code", 4);
+
+        Iterator<Map.Entry<String, Integer>> it = freq.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, Integer> entry = it.next();
+            if (entry.getValue() < 3) {
+                it.remove();
+            }
+        }
+        System.out.println(freq);
+    }
+}
+
+
+class RemoveAndCollect {
+    public static void main(String[] args) {
+        Map<String, Integer> freq = new HashMap<>();
+        freq.put("java", 5);
+        freq.put("map", 2);
+        freq.put("merge", 1);
+        freq.put("code", 4);
+
+        List<Map.Entry<String, Integer>> removed = new ArrayList<>();
+
+        Iterator<Map.Entry<String, Integer>> it = freq.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, Integer> e = it.next();
+            if (e.getValue() < 3) {
+                // TODO(1): добавить текущую пару в removed
+                // TODO(2): удалить текущую пару из freq безопасно
+                removed.add(e);
+                it.remove();
+
+
+            }
+        }
+
+        System.out.println("Осталось: " + freq);
+        System.out.println("Удалили: " + removed);
+
+    }
+}
