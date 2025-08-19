@@ -1865,3 +1865,304 @@ class RemoveAndCollect {
 
     }
 }
+
+
+class TaskPutIfAbsentReview {
+    public static void main(String[] args) {
+        Map<String, String> phoneBook = new HashMap<>();
+        List<String[]> data = Arrays.asList(
+                new String[]{"Alice", "+12345"},
+                new String[]{"Bob", "+67890"},
+                new String[]{"Alice", "+54321"}
+        );
+
+        for (String[] row : data) {
+            String name = row[0];
+            String phone = row[1];
+
+            // TODO: добавить через putIfAbsent
+
+            phoneBook.putIfAbsent(name, phone);
+        }
+
+        System.out.println(phoneBook);
+    }
+}
+
+class TaskMergeReview {
+    public static void main(String[] args) {
+        String text = "java code java map code";
+        Map<String, Integer> freq = new HashMap<>();
+
+        for (String word : text.split(" ")) {
+            // TODO: через merge считать количество
+
+            freq.merge(word, 1, (oldval, newval) -> oldval + newval);
+        }
+
+        System.out.println(freq);
+    }
+}
+
+class TaskComputeReview {
+    public static void main(String[] args) {
+        Map<String, Integer> scores = new HashMap<>();
+        scores.put("Alice", 20);
+        scores.put("Bob", 15);
+
+        String player = "Charlie";
+
+        // TODO: через compute добавить игроку очки
+        // если его нет — создать с 10
+        // если есть — увеличить на 10
+        scores.compute(player, (k, v) -> (v == null) ? 10 : v + 10);
+
+        System.out.println(scores);
+    }
+}
+
+class TaskComputeIfPresentReview {
+    public static void main(String[] args) {
+        Map<String, Integer> scores = new HashMap<>();
+        scores.put("Alice", 20);
+        scores.put("Bob", 15);
+
+        List<String> candidates = Arrays.asList("Alice", "Charlie", "Bob");
+
+        // TODO: пройтись по candidates и увеличить очки на 5 только существующим
+
+        for (String word : candidates) {
+            scores.computeIfPresent(word, (k, v) -> v + 5);
+        }
+        System.out.println(scores);
+
+    }
+}
+
+class TaskReplaceReview {
+    public static void main(String[] args) {
+        Map<String, String> phoneBook = new HashMap<>();
+        phoneBook.put("Alice", "+12345");
+        phoneBook.put("Bob", "+67890");
+
+
+        // TODO: заменить номер Alice только если совпадает старое значение
+
+        phoneBook.replace("Alice", "+12345", "+99999");
+        System.out.println(phoneBook);
+    }
+}
+
+class TaskReplaceAllReview {
+    public static void main(String[] args) {
+        Map<String, Integer> scores = new HashMap<>();
+        scores.put("Alice", 24);
+        scores.put("Bob", 25);
+        scores.put("Charlie", 10);
+
+        // TODO: пройтись по map и изменить значения по условию
+
+        scores.replaceAll((k, v) -> (v >= 25) ? v : v + 3);
+
+        System.out.println(scores);
+    }
+}
+
+class ComparatorTask1 {
+    public static void main(String[] args) {
+        List<String> words = Arrays.asList("java", "a", "merge", "map", "code");
+
+        // TODO: отсортировать по длине ↑, при равенстве по алфавиту
+
+        // Comparator<String> comparator = ...;
+        // words.sort(comparator);
+
+        Comparator<String> sortByLength = Comparator.comparingInt(String::length)
+                .thenComparing(Comparator.naturalOrder());
+
+        words.sort(sortByLength);
+
+        System.out.println(words);
+    }
+}
+
+class ComparatorTask1Desc {
+    public static void main(String[] args) {
+        List<String> words = Arrays.asList("java", "a", "merge", "map", "code");
+
+        // TODO: отсортировать по длине ↓, при равенстве по алфавиту ↑
+
+        // Comparator<String> comparator = ...;
+        // words.sort(comparator);
+
+        Comparator<String> sortByLength = Comparator.comparingInt(String::length).reversed()
+                .thenComparing(Comparator.naturalOrder());
+
+        words.sort(sortByLength);
+
+        System.out.println(words);
+    }
+}
+
+
+class Player {
+    String name;
+    int score;
+
+    Player(String name, int score) {
+        this.name = name;
+        this.score = score;
+    }
+
+    @Override
+    public String toString() {
+        return name + "=" + score;
+    }
+}
+
+class ComparatorTask2 {
+    public static void main(String[] args) {
+        List<Player> players = Arrays.asList(
+                new Player("Alice", 20),
+                new Player("Bob", 25),
+                new Player("Charlie", 20),
+                new Player("Bob", 15)
+        );
+
+        // TODO: отсортировать: score ↓, при равенстве name ↑
+
+        // Comparator<Player> comparator = ...;
+        // players.sort(comparator);
+
+        Comparator<Player> sortByscoreAndName = Comparator.comparingInt((Player p) -> p.score).reversed()
+                .thenComparing(p -> p.name);
+
+
+        players.sort(sortByscoreAndName);
+
+        System.out.println(players);
+    }
+}
+
+class EntrySortTask {
+    public static void main(String[] args) {
+        Map<String, Integer> freq = new HashMap<>();
+        freq.put("java", 5);
+        freq.put("code", 5);
+        freq.put("map", 2);
+        freq.put("merge", 3);
+
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(freq.entrySet());
+
+        // TODO: собрать компаратор: value ↓, затем key ↑
+        // Comparator<Map.Entry<String,Integer>> cmp = ...
+
+        Comparator<Map.Entry<String, Integer>> sortByVal = Comparator.comparingInt((Map.Entry<String, Integer> e) -> e.getValue()).reversed()
+                .thenComparing(Map.Entry.comparingByKey());
+
+        list.sort(sortByVal);
+        // TODO: отсортировать list компаратором
+        // list.sort(cmp);
+
+        // TODO: вывести list в формате key=value
+        for (Map.Entry<String, Integer> entry : list) {
+            System.out.println(entry.getKey() + "=" + entry.getValue());
+        }
+
+    }
+}
+
+
+class EntryTopKTask {
+    public static void main(String[] args) {
+        Map<String, Integer> freq = new HashMap<>();
+        freq.put("java", 5);
+        freq.put("code", 5);
+        freq.put("map", 2);
+        freq.put("merge", 3);
+
+        int k = 2;
+
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(freq.entrySet());
+
+        // TODO: собрать/переиспользовать тот же компаратор: value ↓, затем key ↑
+        Comparator<Map.Entry<String, Integer>> sorter = Comparator.comparingInt((Map.Entry<String, Integer> e) -> e.getValue()).reversed()
+                .thenComparing(Map.Entry.comparingByKey());
+        // list.sort(cmp);
+        list.sort(sorter);
+
+        // TODO: вывести первые k элементов: key=value
+        // for (int i = 0; i < k && i < list.size(); i++) { ... }
+        for (int i = 0; i < k && i < list.size(); i++) {
+            System.out.println(list.get(i).getKey() + "=" + list.get(i).getValue());
+        }
+    }
+}
+
+class EntryFilterTask {
+    public static void main(String[] args) {
+        Map<String, Integer> prices = new HashMap<>();
+        prices.put("apple", 100);
+        prices.put("banana", 40);
+        prices.put("orange", 70);
+        prices.put("mango", 120);
+        prices.put("pear", 40);
+
+        // TODO:
+        // 1) отсортировать список: цена ↓, при равенстве — название ↑
+        // 2) вывести только те товары, у которых цена >= 70
+
+        List<Map.Entry<String, Integer>> info = new ArrayList<>(prices.entrySet());
+
+        Comparator<Map.Entry<String, Integer>> sorter = Comparator.comparingInt((Map.Entry<String, Integer> e) -> e.getValue()).reversed()
+                .thenComparing(Map.Entry.comparingByKey());
+
+
+        info.sort(sorter);
+
+        for (Map.Entry<String, Integer> entry : info) {
+            if (entry.getValue() >= 70) {
+                System.out.println(entry.getKey() + " = " + entry.getValue());
+            }
+        }
+
+
+    }
+}
+
+class EntryTop3Filtered {
+    public static void main(String[] args) {
+        Map<String, Integer> prices = new HashMap<>();
+        prices.put("apple", 100);
+        prices.put("banana", 40);
+        prices.put("orange", 70);
+        prices.put("mango", 120);
+        prices.put("pear", 55);
+        prices.put("kiwi", 50);
+
+        int k = 3;
+
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(prices.entrySet());
+
+        // TODO: собрать компаратор: value ↓, затем key ↑
+        // TODO: отсортировать list
+
+        // TODO: пройтись по list и вывести первые k записей с value >= 50
+        // остановиться, когда выведено k элементов
+
+        Comparator<Map.Entry<String, Integer>> sorter = Comparator.comparing((Map.Entry<String, Integer> e) -> e.getValue()).reversed()
+                .thenComparing(Map.Entry.comparingByKey());
+
+        list.sort(sorter);
+
+        int printed = 0;
+        for (Map.Entry<String, Integer> e : list) {
+            if (e.getValue() >= 50) {
+                System.out.println(e.getKey() + "=" + e.getValue());
+                printed++;
+                if (printed == k) break;
+            }
+        }
+
+        }
+    }
