@@ -2164,5 +2164,5 @@ class EntryTop3Filtered {
             }
         }
 
-        }
     }
+}
