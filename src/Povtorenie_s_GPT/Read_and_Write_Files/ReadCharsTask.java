@@ -1,16 +1,16 @@
 package Povtorenie_s_GPT.Read_and_Write_Files;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.File;
+import GPT_Task.Switch;
+
+import java.io.*;
 import java.nio.file.*;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+
+import static java.util.Collections.sort;
 
 
 public class ReadCharsTask {
@@ -217,80 +217,256 @@ class Contact {
 }
 
 class PhoneBookListDemo {
-    private static final String FILE_PATH = "phonebooklist.txt";
-
-    public static void main(String[] args) {
-        List<Contact> contacts = new ArrayList<>();
-        Scanner in = new Scanner(System.in);
-
-        while (true) {
-            printMenu();
-            String cmd = in.nextLine().trim();
-            switch (cmd) {
-                case "1":
-                    addContact(in, contacts);
-                    break;
-                case "2":
-                    showAll(contacts);
-                    break;
-
-                case "0":
-                    System.out.println("Пока");
-                    return;
-            }
-        }
-
-
-    }
+    final static String FILE_PATH = "phonebook.txt";
+    static List<Contact> contacts = new ArrayList<>();
 
     private static void printMenu() {
         System.out.println("=== Телефонная книга ===");
         System.out.println("1) Добавить контакт");
         System.out.println("2) Показать все");
+        System.out.println("3) Найти по имени");
+        System.out.println("4) Удалить контакт");
         System.out.println("0) Выход");
-        System.out.print("Выбор: ");
     }
 
-    private static void addContact(Scanner in, List<Contact> contacts) {
-        System.out.print("Имя: ");
+
+    private static void addContact(Scanner in) {
+        System.out.print("\nИмя:");
         String name = in.nextLine().trim();
 
-        System.out.print("Номер: ");
+        System.out.print("Телефон:");
         String phone = in.nextLine().trim();
 
-
-        contacts.add(new Contact(name, phone));
-
         if (name.isEmpty() || phone.isEmpty()) {
-            System.out.println("Ошибка: имя и телефон не должны быть пустыми.");
+            System.out.println("Заполните все данные!");
             return;
         }
 
+        if (name.contains(";") || phone.contains(";")) {
+            System.out.println("Разделитель \";\" не допускается.");
+            return;
+        }
 
-        try (FileWriter fw = new FileWriter(FILE_PATH, true);
-             PrintWriter pw = new PrintWriter(fw)) {
-            pw.println(name + ";" + phone);
-            System.out.println("Сохранено: " + name + " -> " + phone);
+        for (Contact c : contacts) {
+            if (c.name.equals(name) && c.phone.equals(phone)) {
+                System.out.println("Такой контакт уже создан.");
+                return;
+            }
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
+            contacts.add(new Contact(name, phone));
+
+
+            bw.write(name + ";" + phone);
+            bw.newLine();
+
+            System.out.println("Контакт \"" + name + " - " + phone + "\" добавлен");
+
         } catch (IOException e) {
             System.out.println("Ошибка: " + e.getMessage());
         }
-
-
     }
 
-    private static void showAll(List<Contact> contacts) {
-        System.out.println("Список контактов: ");
+    private static void loadContactsFromFile() {
+        contacts.clear();
 
-        for (Contact contact : contacts) {
-            System.out.println(contact.toString());
+        File f = new File(FILE_PATH);
+        if (!f.exists()) {
+            return;
         }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))){
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
-            int n = 0;
 
+            while ((line = br.readLine()) != null) {
+                if (line.isBlank()) continue;
+
+                String[] parts = line.split("\\s*;\\s*", 2);
+                String name = parts.length > 0 ? parts[0] : "";
+                String phone = parts.length > 1 ? parts[1] : "";
+
+
+                if (name.isEmpty() || phone.isEmpty()) {
+                    continue;
+                }
+
+                boolean exists = false;
+                for (Contact c : contacts) {
+                    if (c.name.equals(name) && c.phone.equals(phone)) {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (!exists) {
+                    contacts.add(new Contact(name, phone));
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Ошибка: " + e.getMessage());
         }
     }
 
+    private static void showAll() {
+
+        if (!contacts.isEmpty()) {
+            System.out.println("\nСписок контактов:");
+        } else {
+            System.out.println("Список пуст");
+            return;
+        }
+
+        List<Contact> sorted = new ArrayList<>(contacts);
+        Comparator<Contact> comp = Comparator.comparing((Contact c) -> c.name, String.CASE_INSENSITIVE_ORDER)
+                .thenComparing(c -> c.phone);
+        sorted.sort(comp);
+
+        int n = 1;
+
+        for (Contact c : sorted) {
+            System.out.println((n++) + ") " + c.name + " - " + c.phone);
+        }
+
+    }
+
+    private static void findByName(Scanner in) {
+
+        if (!contacts.isEmpty()) {
+            System.out.print("Введите часть имени (поиск без учета регистра): ");
+        }
+        else {
+            System.out.println("Список пуст.");
+            return;
+        }
+
+        String q = in.nextLine();
+
+        if (q.isBlank()) {
+            System.out.println("Пустой запрос.");
+            return;
+        }
+
+        String qNorm = q.toLowerCase().trim();
+
+        List<Contact> result = new ArrayList<>();
+
+        for (Contact c : contacts) {
+            String name = c.name.toLowerCase().trim();
+            if (name.contains(qNorm)) {
+                result.add(c);
+            }
+        }
+
+        if (result.isEmpty()) {
+            System.out.println("Ничего не найдено");
+        } else {
+            result.sort(
+                    Comparator.comparing((Contact c) -> c.name, String.CASE_INSENSITIVE_ORDER)
+                            .thenComparing(c -> c.phone));
+
+            int n = 1;
+            for (Contact c : result) {
+                System.out.println((n++) + ") " + c.name + " - " + c.phone);
+            }
+        }
+
+
+
+
+    }
+
+    private static void deleteContact(Scanner in) {
+
+        if (!contacts.isEmpty()) {
+            System.out.print("Выберите номер из списка для удаления: ");
+        }
+        else {
+            System.out.println("Список пуст.");
+            return;
+        }
+
+        showAll();
+
+
+        String deleteName = in.nextLine();
+
+        if (contacts.isEmpty()) {
+            System.out.println("Список пуст");
+            return;
+        }
+
+        if (deleteName.isBlank()) {
+            System.out.println("Номер не указан.");
+            return;
+        }
+
+        for (char d : deleteName.toCharArray()) {
+            if (!Character.isDigit(d)) {
+                System.out.println("Введите целое число.");
+                return;
+            }
+
+        }
+
+        int n = Integer.parseInt(deleteName);
+        int index = 0;
+
+        if (1 <= n && n <= contacts.size()) {
+            index = n - 1;
+        } else {
+            System.out.println("Номер вне диапазона");
+            return;
+        }
+
+        contacts.sort(Comparator.comparing((Contact c) -> c.name, String.CASE_INSENSITIVE_ORDER)
+                .thenComparing(c -> c.phone));
+
+        Contact removed = contacts.remove(index);
+        System.out.println("Удалён: " + removed.name + " — " + removed.phone);
+
+
+    }
+
+
+    public static void main(String[] args) {
+        loadContactsFromFile();
+
+        Scanner in = new Scanner(System.in);
+        while (true) {
+            printMenu();
+            System.out.print("\nВыбор команды: ");
+            String cmd = in.nextLine().trim();
+            System.out.println();
+
+
+            switch (cmd) {
+                case "1":
+                    addContact(in);
+                    break;
+
+                case "2":
+                    showAll();
+                    break;
+
+                case "3":
+                    findByName(in);
+                    break;
+
+                case "4":
+                    deleteContact(in);
+                    break;
+
+                case "0":
+                    in.close();
+                    System.out.println("Пока!");
+                    return;
+
+                default:
+                    System.out.println("Введите корректную команду");
+            }
+
+        }
+    }
 
 }

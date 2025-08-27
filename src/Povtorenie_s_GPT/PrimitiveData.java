@@ -1,5 +1,9 @@
 package Povtorenie_s_GPT;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -3286,5 +3290,59 @@ class ProductCatalog {
         productCatalog.showProducts();
 
 
+    }
+}
+
+class DivisionRepeatTask {
+    public static void main(String[] args) {
+        int a = 10;
+        int b = 0; // попробуй менять на 0, 2, -5
+
+        try {
+            int res = a / b;
+            System.out.println(res);
+        } catch (ArithmeticException e) {
+            System.out.println("Ошибка: Деление на ноль!");
+        }
+    }
+}
+
+class ReadFileRepeatTask {
+    public static void main(String[] args) {
+
+        try (BufferedReader br = new BufferedReader(new FileReader("phonebooklist.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+
+    }
+
+}
+
+
+class MapRepeatTask {
+    public static void main(String[] args) {
+        Map<String, Integer> people = new HashMap<>();
+
+        // TODO: добавить 3 записи
+
+        // TODO: вывести все записи (имя и возраст)
+
+        people.put("Lev", 22);
+        people.put("Alex", 13);
+        people.put("Oleg", 17);
+
+        for (Map.Entry<String, Integer> entry : people.entrySet()) {
+            String name = entry.getKey();
+            int age = entry.getValue();
+
+            if (age >= 15) {
+                System.out.println(entry.getKey() + ": " + entry.getValue());
+            }
+        }
     }
 }
