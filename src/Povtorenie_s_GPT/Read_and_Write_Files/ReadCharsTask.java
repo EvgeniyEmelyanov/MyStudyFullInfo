@@ -5,10 +5,7 @@ import GPT_Task.Switch;
 import java.io.*;
 import java.nio.file.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import static java.util.Collections.sort;
 
@@ -214,6 +211,18 @@ class Contact {
     public String toString() {
         return name + " — " + phone;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Contact contact = (Contact) o;
+        return Objects.equals(name, contact.name) && Objects.equals(phone, contact.phone);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, phone);
+    }
 }
 
 class PhoneBookListDemo {
@@ -226,7 +235,23 @@ class PhoneBookListDemo {
         System.out.println("2) Показать все");
         System.out.println("3) Найти по имени");
         System.out.println("4) Удалить контакт");
+        System.out.println("5) Редактировать контакт");
         System.out.println("0) Выход");
+    }
+
+    private static void saveAllToFile() {
+        contacts.sort(Comparator.comparing((Contact c) -> c.name, String.CASE_INSENSITIVE_ORDER)
+                .thenComparing(c -> c.phone));
+
+        try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH))) {
+
+            for (Contact contact : contacts) {
+                pw.println(contact.name + ";" + contact.phone);
+            }
+
+        } catch (IOException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
     }
 
 
@@ -254,18 +279,9 @@ class PhoneBookListDemo {
             }
         }
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
-            contacts.add(new Contact(name, phone));
+        contacts.add(new Contact(name, phone));
 
-
-            bw.write(name + ";" + phone);
-            bw.newLine();
-
-            System.out.println("Контакт \"" + name + " - " + phone + "\" добавлен");
-
-        } catch (IOException e) {
-            System.out.println("Ошибка: " + e.getMessage());
-        }
+        saveAllToFile();
     }
 
     private static void loadContactsFromFile() {
@@ -334,8 +350,7 @@ class PhoneBookListDemo {
 
         if (!contacts.isEmpty()) {
             System.out.print("Введите часть имени (поиск без учета регистра): ");
-        }
-        else {
+        } else {
             System.out.println("Список пуст.");
             return;
         }
@@ -372,16 +387,13 @@ class PhoneBookListDemo {
         }
 
 
-
-
     }
 
     private static void deleteContact(Scanner in) {
 
         if (!contacts.isEmpty()) {
             System.out.print("Выберите номер из списка для удаления: ");
-        }
-        else {
+        } else {
             System.out.println("Список пуст.");
             return;
         }
@@ -423,9 +435,89 @@ class PhoneBookListDemo {
                 .thenComparing(c -> c.phone));
 
         Contact removed = contacts.remove(index);
+
+        saveAllToFile();
+
         System.out.println("Удалён: " + removed.name + " — " + removed.phone);
 
 
+    }
+
+    private static void editContact(Scanner in) {
+        if (!contacts.isEmpty()) {
+            System.out.print("Выберите номер из списка для редактирования контакта: ");
+        } else {
+            System.out.println("Список пуст.");
+            return;
+        }
+
+        showAll();
+
+        System.out.print("Введите номер поля для редактирования:");
+        String editor = in.nextLine().trim();
+
+        if (editor.isBlank()) {
+            System.out.println("Номер не указан.");
+            return;
+        }
+
+        for (char d : editor.toCharArray()) {
+            if (!Character.isDigit(d)) {
+                System.out.println("Введите целое число.");
+                return;
+            }
+
+        }
+
+        int n = Integer.parseInt(editor);
+        int index = 0;
+
+        if (1 <= n && n <= contacts.size()) {
+            index = n - 1;
+        } else {
+            System.out.println("Номер вне диапазона");
+            return;
+        }
+
+        ArrayList<Contact> edited = new ArrayList<>(contacts);
+        edited.sort(Comparator.comparing((Contact c) -> c.name, String.CASE_INSENSITIVE_ORDER)
+                .thenComparing(c -> c.phone));
+
+        System.out.print("Введите новое имя: ");
+        String newName = in.nextLine().trim();
+        System.out.print("Введите новый номер: ");
+        String newPhone = in.nextLine().trim();
+
+        String finalName;
+        String finalPhone;
+
+        Contact selected = edited.get(index);
+
+        String oldName = selected.name;
+        String oldPhone = selected.phone;
+
+
+        if (newName.contains(";") || newPhone.contains(";")) {
+            System.out.println("Разделитель \";\" не допускается.");
+            return;
+        }
+
+        String finalNewName = newName.isBlank() ? oldName : newName;
+        String finalNewPhone = newPhone.isBlank() ? oldPhone : newPhone;
+
+
+        for (Contact c : contacts) {
+            if (c == selected) continue; // пропускаем самого себя
+            if (c.name.equals(finalNewName) && c.phone.equals(finalNewPhone)) {
+                System.out.println("Такой контакт уже существует");
+                return;
+            }
+        }
+
+        selected.name = finalNewName;
+        selected.phone = finalNewPhone;
+
+        saveAllToFile();
     }
 
 
@@ -455,6 +547,10 @@ class PhoneBookListDemo {
 
                 case "4":
                     deleteContact(in);
+                    break;
+
+                case "5":
+                    editContact(in);
                     break;
 
                 case "0":
