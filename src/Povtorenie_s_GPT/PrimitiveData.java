@@ -3346,3 +3346,111 @@ class MapRepeatTask {
         }
     }
 }
+
+
+class ArrayTask {
+    public static void findMinMaxSum (int [] arr){
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        int sum = 0;
+
+        for (int i = 0; i < arr.length; i++) {
+            sum += arr[i];
+
+            if (arr[i] < min) {
+                min = arr[i];
+            }
+            if (arr[i] > max) {
+                max = arr[i];
+            }
+
+        }
+        System.out.println("min: " + min + " max: " + max + " sum: " + sum);
+    }
+
+
+    public static void main(String[] args) {
+        int[] arr = {5, 12, -3, 7, 0, 22, -15};
+        findMinMaxSum(arr);
+
+        // TODO: реализовать поиск min, max, sum
+    }
+}
+
+
+class MapTask {
+    public static void countName (List<String> names) {
+        Map<String, Integer> map = new TreeMap<>();
+
+        for (String name : names) {
+            map.merge(name, 1,(oldValue, newValue) -> oldValue + newValue);
+        }
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
+
+
+    public static void main(String[] args) {
+        List<String> names = Arrays.asList(
+                "Alice", "Bob", "Alice", "Tom", "Bob", "Alice"
+        );
+        countName(names);
+
+        // TODO: посчитать количество повторений имён
+    }
+}
+
+
+
+ class ArraySignCounter {
+    public static void counterNubers (int [] arr){
+        int biggerThen_0 =0;
+        int lessThen_0 = 0;
+        int equals_0 = 0;
+
+        for (int i : arr){
+            if (i == 0){
+                equals_0++;
+            }
+            if (i > 0){
+                biggerThen_0++;
+            }
+            if (i < 0){
+                lessThen_0++;
+            }
+        }
+        System.out.println(biggerThen_0 + " " + lessThen_0 + " " + equals_0);
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {5, -2, 0, 7, -9, 0, 3};
+        counterNubers (arr);
+        // твой код здесь
+    }
+}
+
+
+
+
+ class WordCounter {
+    public static void counterLetter (List<String> words) {
+        Map<String, Integer> map = new TreeMap<>();
+
+        for (String word : words) {
+            String firstLetter = word.substring(0, 1);
+
+            map.merge(firstLetter, 1, Integer::sum);
+        }
+
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
+
+    public static void main(String[] args) {
+        List<String> words = Arrays.asList("apple", "banana", "apricot", "cherry", "blueberry");
+        counterLetter(words);
+        // твой код здесь
+    }
+}
