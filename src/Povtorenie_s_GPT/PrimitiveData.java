@@ -1,7 +1,6 @@
 package Povtorenie_s_GPT;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -3349,7 +3348,7 @@ class MapRepeatTask {
 
 
 class ArrayTask {
-    public static void findMinMaxSum (int [] arr){
+    public static void findMinMaxSum(int[] arr) {
         int min = Integer.MAX_VALUE;
         int max = Integer.MIN_VALUE;
         int sum = 0;
@@ -3379,11 +3378,11 @@ class ArrayTask {
 
 
 class MapTask {
-    public static void countName (List<String> names) {
+    public static void countName(List<String> names) {
         Map<String, Integer> map = new TreeMap<>();
 
         for (String name : names) {
-            map.merge(name, 1,(oldValue, newValue) -> oldValue + newValue);
+            map.merge(name, 1, (oldValue, newValue) -> oldValue + newValue);
         }
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
             System.out.println(entry.getKey() + ": " + entry.getValue());
@@ -3402,21 +3401,20 @@ class MapTask {
 }
 
 
-
- class ArraySignCounter {
-    public static void counterNubers (int [] arr){
-        int biggerThen_0 =0;
+class ArraySignCounter {
+    public static void counterNubers(int[] arr) {
+        int biggerThen_0 = 0;
         int lessThen_0 = 0;
         int equals_0 = 0;
 
-        for (int i : arr){
-            if (i == 0){
+        for (int i : arr) {
+            if (i == 0) {
                 equals_0++;
             }
-            if (i > 0){
+            if (i > 0) {
                 biggerThen_0++;
             }
-            if (i < 0){
+            if (i < 0) {
                 lessThen_0++;
             }
         }
@@ -3425,16 +3423,14 @@ class MapTask {
 
     public static void main(String[] args) {
         int[] arr = {5, -2, 0, 7, -9, 0, 3};
-        counterNubers (arr);
+        counterNubers(arr);
         // твой код здесь
     }
 }
 
 
-
-
- class WordCounter {
-    public static void counterLetter (List<String> words) {
+class WordCounter {
+    public static void counterLetter(List<String> words) {
         Map<String, Integer> map = new TreeMap<>();
 
         for (String word : words) {
@@ -3452,5 +3448,82 @@ class MapTask {
         List<String> words = Arrays.asList("apple", "banana", "apricot", "cherry", "blueberry");
         counterLetter(words);
         // твой код здесь
+    }
+}
+
+
+class WordFrequency {
+    public static List<Map.Entry<String, Integer>> abc(String text) {
+        String words = text.toLowerCase().replaceAll("[^a-z ]", "");
+
+        String[] wordArray = words.trim().split("\\s+");
+
+        Map<String, Integer> map = new HashMap<>();
+
+        for (String word : wordArray) {
+            map.merge(word, 1, Integer::sum);
+        }
+
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+
+        Comparator<Map.Entry<String, Integer>> comparator = Comparator.comparingInt((Map.Entry<String, Integer> e) -> e.getValue()).reversed()
+                .thenComparing(Map.Entry::getKey);
+
+        list.sort(comparator);
+
+
+        // TODO: нормализовать строку (toLowerCase, убрать всё кроме букв и пробелов)
+        // TODO: разбить текст на слова
+        // TODO: посчитать частоты слов через HashMap
+        // TODO: отсортировать по условию (частота ↓, слово ↑)
+
+        return list;
+    }
+
+    public static void main(String[] args) {
+        String text = "Hello, hello! Java is great. Java is powerful.";
+        List<Map.Entry<String, Integer>> result = abc(text);
+        for (Map.Entry<String, Integer> e : result) {
+            System.out.println(e.getKey() + " -> " + e.getValue());
+        }
+    }
+}
+
+
+class Contact {
+    String name;
+    String phone;
+
+    Contact(String name, String phone) {
+        this.name = name;
+        this.phone = phone;
+    }
+}
+
+class PhoneBookCounter {
+    public static Map<String, Integer> countPhones(List<Contact> contacts) {
+        // TODO: пройтись по списку и посчитать телефоны на имя
+
+        Map<String, Integer> map = new HashMap<>();
+
+        for (Contact contact : contacts) {
+            map.merge(contact.name, 1, Integer::sum);
+        }
+
+
+        return map;
+    }
+
+    public static void main(String[] args) {
+        List<Contact> contacts = Arrays.asList(
+                new Contact("Alice", "+123"),
+                new Contact("Bob", "+456"),
+                new Contact("Alice", "+789"),
+                new Contact("Charlie", "+111"),
+                new Contact("Bob", "+222")
+        );
+
+        Map<String, Integer> result = countPhones(contacts);
+        System.out.println(result);
     }
 }
