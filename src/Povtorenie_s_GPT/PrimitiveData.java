@@ -3527,3 +3527,293 @@ class PhoneBookCounter {
         System.out.println(result);
     }
 }
+
+class ArrayTask1 {
+    public static void main(String[] args) {
+        int[] arr = {5, -2, 0, 7, -9, 3};
+
+        int sum = 0;
+        int min = Integer.MAX_VALUE;
+        int counter = 0;
+
+        for (int i : arr) {
+            sum += i;
+            if (i < min) {
+                min = i;
+            }
+            if (i > 0) {
+                counter++;
+            }
+        }
+        System.out.println(sum);
+        System.out.println(min);
+        System.out.println(counter);
+
+    }
+}
+
+class ArrayTask2 {
+    public static void main(String[] args) {
+        int[] arr = {4, 7, -3, 9, 0, 5};
+
+        int max = Integer.MIN_VALUE;
+        int index = -1;
+
+        // TODO: найти максимум и его индекс
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] > max) {
+                max = arr[i];
+                index = i;
+            }
+        }
+
+        System.out.println("Максимум: " + max);
+        System.out.println("Индекс: " + index);
+    }
+}
+
+class ArrayTask3 {
+    public static void main(String[] args) {
+        int[] arr = {4, 7, -3, 9, 0, 5};
+
+        int index = findMaxIndex(arr);
+
+        System.out.println("Максимум: " + arr[index]);
+        System.out.println("Индекс: " + index);
+    }
+
+    public static int findMaxIndex(int[] arr) {
+        int max = Integer.MIN_VALUE;
+        int index = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] > max) {
+                max = arr[i];
+                index = i;
+
+            }
+        }
+        return index;
+    }
+}
+
+class ArrayTask4 {
+    public static void main(String[] args) {
+        int[] arr = {4, 7, -3, 9, 0, 5};
+
+        double avg = findAverage(arr);
+
+        System.out.printf("Среднее значение: %.2f", avg);
+    }
+
+    public static double findAverage(int[] arr) {
+        int sum = 0;
+        for (int num : arr) {
+            sum += num;
+        }
+
+        double avg = (double) sum / arr.length;
+
+
+        return avg;
+    }
+}
+
+
+class ListTask1 {
+    public static void main(String[] args) {
+        ArrayList<String> students = new ArrayList<>();
+
+        students.add("Alice");
+        students.add("Bob");
+        students.add("John");
+        students.remove("Alice");
+
+        int index = 0;
+        for (String student : students) {
+            System.out.println(student + " -> " + index);
+            index++;
+        }
+    }
+}
+
+class ListTask2 {
+    public static void main(String[] args) {
+        ArrayList<String> students = new ArrayList<>();
+
+        students.add("Alice");
+        students.add("Bob");
+        students.add("John");
+
+        for (int i = 0; i < students.size(); i++) {
+            int index = students.indexOf("John");
+
+            if (index != -1) {
+                students.set(index, "Charlie");
+            }
+
+        }
+
+        for (String student : students) {
+            System.out.println(student);
+        }
+
+    }
+}
+
+class ListTask3 {
+    public static void main(String[] args) {
+        ArrayList<String> students = new ArrayList<>();
+        students.add("Al");
+        students.add("Bob");
+        students.add("Charlie");
+        students.add("Tom");
+        students.add("Alice");
+
+
+        for (String st : students) {
+            if (st.length() > 3) {
+                System.out.println(st.toUpperCase());
+            }
+        }
+
+    }
+}
+
+class MapTask1 {
+    public static void main(String[] args) {
+        String text = "java is great and java is powerful";
+
+        Map<String, Integer> map = new HashMap<>();
+
+        for (String words : text.split(" ")) {
+            map.merge(words, 1, Integer::sum);
+        }
+
+
+        map.forEach((k, v) -> {
+            System.out.println(k + "->" + v);
+        });
+
+
+    }
+}
+
+class MapTask2 {
+    public static void main(String[] args) {
+        String text = "java is great and java is powerful";
+
+        Map<String, Integer> map = new HashMap<>();
+
+        for (String word : text.split(" ")) {
+            map.put(word, map.getOrDefault(word, 0) + 1);
+
+        }
+
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+
+        list.sort(
+                Comparator.comparing((Map.Entry<String, Integer> e) -> e.getValue()).reversed()
+                        .thenComparing(Map.Entry.comparingByKey())
+
+        );
+
+        for (Map.Entry<String, Integer> entry : list) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
+        }
+    }
+}
+
+
+class MapTask4 {
+    public static void main(String[] args) {
+        String text = "hello java";
+
+        Map<Character, Integer> map = new HashMap<>();
+
+
+        for (Character ch : text.toCharArray()) {
+            if (ch == ' ') {
+                continue;
+            }
+            map.merge(ch, 1, Integer::sum);
+        }
+
+        map.forEach((k, v) -> {
+            System.out.println(k + " -> " + v);
+        });
+
+    }
+}
+
+class MapTask5 {
+    public static void main(String[] args) {
+        String text = "programming in java is awesome";
+
+        String vowels = "aeiou";
+
+        Map<Character, Integer> map = new HashMap<>();
+
+        for (Character ch : vowels.toCharArray()) {
+            map.put(ch, 0);
+        }
+
+        for (Character ch : text.toCharArray()) {
+            if (ch == ' ') {
+                continue;
+            } else {
+                map.computeIfPresent(ch, (k, v) -> v + 1);
+            }
+        }
+
+        List<Map.Entry<Character, Integer>> list = new ArrayList<>(map.entrySet());
+        list.sort(
+                Comparator.comparing((Map.Entry<Character, Integer> e) -> e.getKey())
+                        .thenComparing(Map.Entry.comparingByValue())
+        );
+
+
+        for (Map.Entry<Character, Integer> entry : list) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
+        }
+
+    }
+}
+
+
+class MapTask6 {
+    public static void main(String[] args) {
+        String text = "banana apple apricot avocado";
+
+        Map<Character, Integer> map = new HashMap<>();
+
+        // TODO: посчитать буквы
+        for (Character ch : text.toCharArray()) {
+            if (ch == ' ') {
+                continue;
+            } else {
+                map.merge(ch, 1, Integer::sum);
+            }
+        }
+
+        List<Map.Entry<Character, Integer>> list = new ArrayList<>(map.entrySet());
+
+        list.sort(
+                Comparator.comparing((Map.Entry<Character, Integer> e) -> e.getValue()).reversed()
+                        .thenComparing(Map.Entry.comparingByKey())
+        );
+
+
+        int breaker = 0;
+
+        for (Map.Entry<Character, Integer> entry : list) {
+            if (breaker != 3){
+                System.out.println(entry.getKey() + " -> " + entry.getValue());
+                breaker++;
+            } else {
+                break;
+            }
+
+        }
+    }
+}
