@@ -3807,7 +3807,7 @@ class MapTask6 {
         int breaker = 0;
 
         for (Map.Entry<Character, Integer> entry : list) {
-            if (breaker != 3){
+            if (breaker != 3) {
                 System.out.println(entry.getKey() + " -> " + entry.getValue());
                 breaker++;
             } else {
@@ -3815,5 +3815,58 @@ class MapTask6 {
             }
 
         }
+    }
+}
+
+
+class MapTask7 {
+    public static void main(String[] args) {
+        String text = "Java is great, and Java is powerful. Kotlin is also great!";
+
+        String words = text.toLowerCase().replaceAll("[^a-z ]", "");
+
+        Scanner in = new Scanner(System.in);
+        System.out.print("Enter N: ");
+        int N = in.nextInt();
+
+        Map<String, Integer> map = new HashMap<>();
+
+        for (String word : words.split("\\s+")) {
+            map.merge(word, 1, Integer::sum);
+        }
+
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+
+        list.sort(
+                Comparator.comparing((Map.Entry<String, Integer> e) -> e.getValue()).reversed()
+                        .thenComparing(Map.Entry::getKey)
+        );
+
+        list.stream().limit(N).forEach(
+                e -> System.out.println(
+                        e.getKey() + " -> " + e.getValue()
+                )
+        );
+
+    }
+}
+
+
+class DivisionTask {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Enter first number");
+        int firstNum = in.nextInt();
+        System.out.println("enter second number");
+        int secondNum = in.nextInt();
+
+        try {
+            int result = firstNum/secondNum;
+            System.out.println(result);
+        } catch (ArithmeticException e){
+            System.out.println("Ошибка: деление на ноль!");
+        }
+
+
     }
 }

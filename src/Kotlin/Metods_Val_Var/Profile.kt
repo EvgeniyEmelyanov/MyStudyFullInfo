@@ -6,5 +6,5 @@ fun main() {
     println("Input your age")
     val age = readln()
     println("You are " + age + " ears old")
-    
+
 }
