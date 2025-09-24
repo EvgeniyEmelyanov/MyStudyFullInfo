@@ -1,8 +1,6 @@
 package Povtorenie_s_GPT;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 
@@ -3911,7 +3909,7 @@ class MapTask8 {
                         .thenComparing(Map.Entry.comparingByKey())
         );
 
-        for (int i = 0; Math.min (N, list.size()) > i; i++) {
+        for (int i = 0; Math.min(N, list.size()) > i; i++) {
             var e = list.get(i);
             System.out.println(e.getKey() + " -> " + e.getValue());
         }
@@ -3951,7 +3949,6 @@ class DivisionTask3 {
 }
 
 
-
 class FileReadDemo {
     public static void main(String[] args) {
         String path = "phonebook.txt"; // путь к файлу
@@ -3959,7 +3956,7 @@ class FileReadDemo {
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
 
-            while ((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
 
@@ -3969,4 +3966,243 @@ class FileReadDemo {
             System.out.println("Ошибка при чтении файла: " + e.getMessage());
         }
     }
+}
+
+
+class FileStatsDemo {
+    public static void main(String[] args) {
+        String path = "phonebook.txt"; // входной файл
+
+        int lineCount = 0;   // счётчик строк
+        int wordCount = 0;   // счётчик слов
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                lineCount++;
+
+                String[] words = line.trim().split("\\s+");
+                for (String word : words) {
+                    if (!word.isEmpty()) {
+                        wordCount++;
+                    }
+                }
+            }
+
+            System.out.println("Строк: " + lineCount);
+            System.out.println("Слов: " + wordCount);
+
+        } catch (IOException e) {
+            System.out.println("Ошибка при чтении файла: " + e.getMessage());
+        }
+    }
+}
+
+class FileWriteDemo {
+    public static void main(String[] args) {
+        String input = "phonebook.txt";   // вход
+        String output = "stats.txt";      // выход
+
+        int lineCount = 0;
+        int wordCount = 0;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(input))) {
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                lineCount++;
+                if (!line.isBlank()) {
+                    wordCount += line.trim().split("\\s+").length;
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println("Ошибка при чтении: " + e.getMessage());
+        }
+
+        // TODO: теперь записать lineCount и wordCount в файл output
+        try (PrintWriter writer = new PrintWriter(new FileWriter(output))) {
+            writer.println("Количество строк: " + lineCount);
+            writer.println("Количество слов: " + wordCount);
+
+
+        } catch (IOException e) {
+            System.out.println("Ошибка при записи: " + e.getMessage());
+        }
+    }
+}
+
+class Contacts {
+    private String firstName;
+    private String lastName;
+    private String phone;
+
+    public Contacts(String firstName, String lastName, String phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Contacts contacts = (Contacts) o;
+        return Objects.equals(firstName, contacts.firstName) && Objects.equals(lastName, contacts.lastName) && Objects.equals(phone, contacts.phone);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, phone);
+    }
+}
+
+
+class PhoneBook {
+    final static String PATH_CONTACTS = "Contacts_list.txt";
+    static ArrayList<Contacts> contacts = new ArrayList<>();
+
+    private static void showMenu() {
+        System.out.println("===Телефонная книга===");
+        System.out.println("1) добавить контакт");
+        System.out.println("2) редактировать контакт");
+        System.out.println("3) удалить контакт");
+        System.out.println("4) показать список контактов");
+        System.out.println("5) поиск контактов");
+        System.out.println("0) закрыть программу");
+    }
+
+    private static void saveToFile() {
+        contacts.sort(
+                Comparator.comparing((Contacts c) -> c.getLastName(), String.CASE_INSENSITIVE_ORDER)
+                        .thenComparing(c -> c.getFirstName(), String.CASE_INSENSITIVE_ORDER)
+                        .thenComparing(c -> c.getPhone(), String.CASE_INSENSITIVE_ORDER)
+        );
+
+        try (PrintWriter pr = new PrintWriter(new FileWriter(PATH_CONTACTS))) {
+            for (Contacts c : contacts) {
+                pr.println(c.getFirstName() + "->" + c.getLastName() + "->" + c.getPhone());
+            }
+
+        } catch (IOException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+
+        }
+
+    }
+
+    private static void loadFromFile() {
+        contacts.clear();
+
+        File file = new File(PATH_CONTACTS);
+        if (!file.exists()) {
+            return;
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(PATH_CONTACTS))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                while (line.isBlank()) continue;
+
+                String[] path = line.trim().split("\\s*->\\s*->\\s*", 3);
+                String firstName = path[0];
+                String lastName = path[1];
+                String phone = path[2];
+
+                contacts.add(new Contacts(firstName, lastName, phone));
+            }
+
+        } catch (IOException e) {
+            System.out.println("Ошибка" + e.getMessage());
+        }
+    }
+
+
+    private static void saveContact(Scanner in) {
+        System.out.println("Введите фамилию контакта");
+        String LastName = in.nextLine().trim();
+
+        System.out.println("Введите имя контакта");
+        String FirstName = in.nextLine().trim();
+
+        System.out.println("Введите номер телефона контакта");
+        String Phone = in.nextLine().trim();
+
+
+        contacts.add(new Contacts(FirstName, LastName, Phone));
+        saveToFile();
+    }
+
+    private static void showContacts (Scanner in) {
+        System.out.println("Список контактов: ");
+
+        ArrayList<Contacts> contactsArrayList = new ArrayList<>(contacts);
+
+        int n = 1;
+        for (Contacts c : contactsArrayList) {
+            System.out.println(n +") имя: " + c.getFirstName() + ", фамилия: " + c.getLastName() + ", номер: " + c.getPhone());
+            n++;
+        }
+    }
+
+
+    public static void main(String[] args) {
+
+
+        Scanner in = new Scanner(System.in);
+
+        while (true) {
+            showMenu();
+
+            System.out.print("Введите команду: ");
+            String cmd = in.nextLine().trim();
+
+            switch (cmd) {
+                case "1":
+                    saveContact(in);
+                    break;
+                case "2":
+                    break;
+                case "3":
+                    break;
+                case "4":
+                    showContacts(in);
+                    break;
+                case "5":
+                    break;
+                case "0":
+                    System.out.println("Работа программы завершена.");
+                    return;
+
+            }
+
+
+        }
+    }
+
+
 }
