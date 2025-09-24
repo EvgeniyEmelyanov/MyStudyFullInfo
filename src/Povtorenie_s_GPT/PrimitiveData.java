@@ -3861,12 +3861,112 @@ class DivisionTask {
         int secondNum = in.nextInt();
 
         try {
-            int result = firstNum/secondNum;
+            int result = firstNum / secondNum;
             System.out.println(result);
-        } catch (ArithmeticException e){
+        } catch (ArithmeticException e) {
             System.out.println("Ошибка: деление на ноль!");
         }
 
 
+    }
+}
+
+
+class DivisionTask2 {
+    public static int divide(int a, int b) throws ArithmeticException {
+        return a / b;
+    }
+
+    public static void main(String[] args) {
+        try {
+            int res = divide(10, 0); // тут будет ошибка
+            System.out.println("Результат: " + res);
+        } catch (ArithmeticException e) {
+            System.out.println("Ошибка: деление на ноль!");
+        }
+    }
+}
+
+
+class MapTask8 {
+    public static void main(String[] args) {
+        String text = "Java is great, and Java is powerful. Kotlin is also great!";
+
+        Scanner in = new Scanner(System.in);
+        System.out.print("Enter N: ");
+        int N = in.nextInt();
+
+        Map<String, Integer> map = new HashMap<>();
+
+        String words = text.toLowerCase().replaceAll("[^a-z ]", "");
+
+        for (String word : words.split("\\s+")) {
+            map.merge(word, 1, Integer::sum);
+        }
+
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+
+        list.sort(
+                Comparator.comparing((Map.Entry<String, Integer> e) -> e.getValue()).reversed()
+                        .thenComparing(Map.Entry.comparingByKey())
+        );
+
+        for (int i = 0; Math.min (N, list.size()) > i; i++) {
+            var e = list.get(i);
+            System.out.println(e.getKey() + " -> " + e.getValue());
+        }
+
+        // TODO: нормализовать строку
+        // TODO: разбить на слова
+        // TODO: посчитать частоты
+        // TODO: отсортировать
+        // TODO: вывести только топ-N
+    }
+}
+
+
+class DivisionByZeroException extends Exception {
+    public DivisionByZeroException(String message) {
+        super(message);
+    }
+}
+
+class DivisionTask3 {
+    public static int divide(int a, int b) throws DivisionByZeroException {
+        if (b == 0) {
+            throw new DivisionByZeroException("Ошибка деление на ноль!");
+        }
+        return a / b;
+        // иначе вернуть результат
+    }
+
+    public static void main(String[] args) {
+        try {
+            int res = divide(10, 0);
+            System.out.println("Результат: " + res);
+        } catch (DivisionByZeroException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+    }
+}
+
+
+
+class FileReadDemo {
+    public static void main(String[] args) {
+        String path = "phonebook.txt"; // путь к файлу
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            String line;
+
+            while ((line = reader.readLine()) != null){
+                System.out.println(line);
+            }
+
+            // TODO: пройтись по строкам и вывести их в консоль
+
+        } catch (IOException e) {
+            System.out.println("Ошибка при чтении файла: " + e.getMessage());
+        }
     }
 }
