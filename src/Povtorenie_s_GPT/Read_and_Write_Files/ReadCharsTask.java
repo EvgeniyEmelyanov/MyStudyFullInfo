@@ -415,8 +415,8 @@ class PhoneBookListDemo {
 
         for (char d : deleteName.toCharArray()) {
             if (!Character.isDigit(d)) {
-                System.out.println("Введите целое число.");
-                return;
+                    System.out.println("Введите целое число.");
+                    return;
             }
 
         }
@@ -488,8 +488,7 @@ class PhoneBookListDemo {
         System.out.print("Введите новый номер: ");
         String newPhone = in.nextLine().trim();
 
-        String finalName;
-        String finalPhone;
+
 
         Contact selected = edited.get(index);
 

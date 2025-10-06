@@ -4034,22 +4034,22 @@ class FileWriteDemo {
 }
 
 class Contacts {
-    private String firstName;
+    private String name;
     private String lastName;
     private String phone;
 
-    public Contacts(String firstName, String lastName, String phone) {
-        this.firstName = firstName;
+    public Contacts(String name, String lastName, String phone) {
+        this.name = name;
         this.lastName = lastName;
         this.phone = phone;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getLastName() {
@@ -4072,12 +4072,12 @@ class Contacts {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Contacts contacts = (Contacts) o;
-        return Objects.equals(firstName, contacts.firstName) && Objects.equals(lastName, contacts.lastName) && Objects.equals(phone, contacts.phone);
+        return Objects.equals(name, contacts.name) && Objects.equals(lastName, contacts.lastName) && Objects.equals(phone, contacts.phone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, phone);
+        return Objects.hash(name, lastName, phone);
     }
 }
 
@@ -4085,6 +4085,11 @@ class Contacts {
 class PhoneBook {
     final static String PATH_CONTACTS = "Contacts_list.txt";
     static ArrayList<Contacts> contacts = new ArrayList<>();
+
+    static final Comparator<Contacts> SORTER =
+            Comparator.comparing(Contacts::getLastName, String.CASE_INSENSITIVE_ORDER)
+                    .thenComparing(Contacts::getName, String.CASE_INSENSITIVE_ORDER)
+                    .thenComparing(Contacts::getPhone, String.CASE_INSENSITIVE_ORDER);
 
     private static void showMenu() {
         System.out.println("===Телефонная книга===");
@@ -4097,15 +4102,11 @@ class PhoneBook {
     }
 
     private static void saveToFile() {
-        contacts.sort(
-                Comparator.comparing((Contacts c) -> c.getLastName(), String.CASE_INSENSITIVE_ORDER)
-                        .thenComparing(c -> c.getFirstName(), String.CASE_INSENSITIVE_ORDER)
-                        .thenComparing(c -> c.getPhone(), String.CASE_INSENSITIVE_ORDER)
-        );
+        contacts.sort(SORTER);
 
         try (PrintWriter pr = new PrintWriter(new FileWriter(PATH_CONTACTS))) {
             for (Contacts c : contacts) {
-                pr.println(c.getFirstName() + "->" + c.getLastName() + "->" + c.getPhone());
+                pr.println(c.getLastName() + ";" + c.getName() + ";" + c.getPhone());
             }
 
         } catch (IOException e) {
@@ -4126,14 +4127,25 @@ class PhoneBook {
         try (BufferedReader br = new BufferedReader(new FileReader(PATH_CONTACTS))) {
             String line;
             while ((line = br.readLine()) != null) {
-                while (line.isBlank()) continue;
+                if (line.isBlank()) continue;
 
-                String[] path = line.trim().split("\\s*->\\s*->\\s*", 3);
-                String firstName = path[0];
-                String lastName = path[1];
-                String phone = path[2];
+                String[] parts = line.trim().split("\\s*;\\s*", 3);
 
-                contacts.add(new Contacts(firstName, lastName, phone));
+                if (parts.length != 3) {
+                    System.out.println("Пропускаю битую строку (некорректный формат): " + line);
+                    continue;
+                }
+
+                String lastName = parts[0].trim();
+                String name = parts[1].trim();
+                String phone = parts[2].trim();
+
+                if (lastName.isEmpty() || name.isEmpty() || phone.isEmpty()) {
+                    System.out.println("Пропускаю строку (пустые поля): " + line);
+                    continue;
+                }
+
+                contacts.add(new Contacts(lastName, name, phone));
             }
 
         } catch (IOException e) {
@@ -4142,7 +4154,7 @@ class PhoneBook {
     }
 
 
-    private static void saveContact(Scanner in) {
+    private static void addContact(Scanner in) {
         System.out.println("Введите фамилию контакта");
         String LastName = in.nextLine().trim();
 
@@ -4154,24 +4166,147 @@ class PhoneBook {
 
 
         contacts.add(new Contacts(FirstName, LastName, Phone));
+
         saveToFile();
     }
 
-    private static void showContacts (Scanner in) {
+    private static void editContact(Scanner in) {
+
+        if (!contacts.isEmpty()) {
+            showContacts();
+            System.out.print("Выберите номер из списка для редактирования контакта: ");
+        } else {
+            System.out.println("Список пуст.");
+            return;
+        }
+
+
+        String chose = in.nextLine().trim();
+
+        List<Contacts> view = new ArrayList<>(contacts);
+
+        view.sort(SORTER);
+
+        System.out.print("Введите новое имя: ");
+        String newName = in.nextLine().trim();
+
+        System.out.print("Введите новую фамилию: ");
+        String newLastName = in.nextLine().trim();
+
+        System.out.print("Введите новый номер: ");
+        String newPhone = in.nextLine().trim();
+
+
+        if (chose.isBlank()) {
+            System.out.println("Номер не указан.");
+            return;
+        }
+
+        for (char d : chose.toCharArray()) {
+            if (!Character.isDigit(d)) {
+                System.out.println("Введите целое число.");
+                return;
+            }
+        }
+
+        int n = Integer.parseInt(chose);
+        int index = 0;
+
+        if (1 <= n && n <= contacts.size()) {
+            index = n - 1;
+        } else {
+            System.out.println("Номер вне диапазона.");
+        }
+
+
+        Contacts selected = view.get(index);
+
+        String oldName = selected.getName();
+        String oldLastName = selected.getLastName();
+        String oldPhone = selected.getPhone();
+
+        String newFinalName = newName.isBlank() ? oldName : newName;
+        String newFinalLastName = newLastName.isBlank() ? oldLastName : newLastName;
+        String newFinalPhone = newPhone.isBlank() ? oldPhone : newPhone;
+
+
+        for (Contacts c : contacts) {
+            if (c == selected) continue;
+            if (c.getName().equals(newFinalName) && c.getLastName().equals(newFinalLastName) && c.getPhone().equals(newFinalPhone)) {
+                System.out.println("Такой контакт уже существует");
+                return;
+            }
+        }
+
+        selected.setName(newFinalName);
+        selected.setLastName(newFinalLastName);
+        selected.setPhone(newFinalPhone);
+
+        saveToFile();
+
+
+    }
+
+    private static void deleteContact(Scanner in) {
+        if (!contacts.isEmpty()) {
+            showContacts();
+            System.out.print("Выберите номер из списка для редактирования контакта: ");
+        } else {
+            System.out.println("Список пуст.");
+            return;
+        }
+
+        String deleter = in.nextLine().trim();
+
+        List<Contacts> view = new ArrayList<>(contacts);
+        view.sort(SORTER);
+
+        if (deleter.isBlank()) {
+            System.out.println("Номер не указан.");
+        }
+
+        for (char d : deleter.toCharArray()) {
+            if (!Character.isDigit(d)) {
+                System.out.println("Введите целое число.");
+                return;
+            }
+        }
+
+        int n = Integer.parseInt(deleter);
+        int index = 0;
+
+        if (1 <= n && n >= contacts.size()) {
+            index = n - 1;
+        } else {
+            System.out.println("Номер вне диапазона");
+            return;
+        }
+
+        Contacts removed = contacts.remove(index);
+
+        saveToFile();
+
+        System.out.println("Удалён: " + removed.getLastName() + " — " + removed.getName() + " — " + removed.getPhone());
+
+
+    }
+
+    private static void showContacts() {
         System.out.println("Список контактов: ");
 
         ArrayList<Contacts> contactsArrayList = new ArrayList<>(contacts);
+        contactsArrayList.sort(SORTER);
 
         int n = 1;
         for (Contacts c : contactsArrayList) {
-            System.out.println(n +") имя: " + c.getFirstName() + ", фамилия: " + c.getLastName() + ", номер: " + c.getPhone());
+            System.out.println(n + ") фамилия: " + c.getLastName() + ", имя: " + c.getName() + ", номер: " + c.getPhone());
             n++;
         }
     }
 
 
     public static void main(String[] args) {
-
+        loadFromFile();
 
         Scanner in = new Scanner(System.in);
 
@@ -4183,14 +4318,16 @@ class PhoneBook {
 
             switch (cmd) {
                 case "1":
-                    saveContact(in);
+                    addContact(in);
                     break;
                 case "2":
+                    editContact(in);
                     break;
                 case "3":
+                    deleteContact(in);
                     break;
                 case "4":
-                    showContacts(in);
+                    showContacts();
                     break;
                 case "5":
                     break;
